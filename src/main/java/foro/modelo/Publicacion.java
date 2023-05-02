@@ -1,111 +1,55 @@
 package foro.modelo;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+//import java.util.ArrayList;
+//import java.util.List;
 
+import foro.dto.DatosNuevaPublicacion;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
+@Entity(name = "Publicacion")
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
+@ToString
+@Table(name = "publicaciones", uniqueConstraints = { @UniqueConstraint(columnNames = { "titulo", "mensaje" }) })
 public class Publicacion {
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
+
+	@Column(name = "titulo", nullable = false)
 	private String titulo;
+
+	@Column(name = "mensaje", nullable = false)
 	private String mensaje;
+
+	@Column(name = "fecha_creacion")
 	private LocalDateTime fechaCreacion = LocalDateTime.now();
+
+	@Enumerated(EnumType.STRING)
+	@Column(name = "estado")
 	private EstadoPublicacion estado = EstadoPublicacion.NO_RESPONDIDO;
-	private Usuario autor;
-	private Curso curso;
-	private List<Respuesta> respuestas = new ArrayList<>();
 
-	public Publicacion(String titulo, String mensaje, Curso curso) {
-		this.titulo = titulo;
-		this.mensaje = mensaje;
-		this.curso = curso;
+	public Publicacion(DatosNuevaPublicacion datosPublicacion) {
+		this.titulo = datosPublicacion.titulo();
+		this.mensaje = datosPublicacion.mensaje();
 	}
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Publicacion other = (Publicacion) obj;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		return true;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getTitulo() {
-		return titulo;
-	}
-
-	public void setTitulo(String titulo) {
-		this.titulo = titulo;
-	}
-
-	public String getMensaje() {
-		return mensaje;
-	}
-
-	public void setMensaje(String mensaje) {
-		this.mensaje = mensaje;
-	}
-
-	public LocalDateTime getfechaCreacion() {
-		return fechaCreacion;
-	}
-
-	public void setfechaCreacion(LocalDateTime fechaCreacion) {
-		this.fechaCreacion = fechaCreacion;
-	}
-
-	public EstadoPublicacion getEstado() {
-		return estado;
-	}
-
-	public void setEstado(EstadoPublicacion estado) {
-		this.estado = estado;
-	}
-
-	public Usuario getAutor() {
-		return autor;
-	}
-
-	public void setAutor(Usuario autor) {
-		this.autor = autor;
-	}
-
-	public Curso getCurso() {
-		return curso;
-	}
-
-	public void setCurso(Curso curso) {
-		this.curso = curso;
-	}
-
-	public List<Respuesta> getRespuestas() {
-		return respuestas;
-	}
-
-	public void setRespuestas(List<Respuesta> respuestas) {
-		this.respuestas = respuestas;
-	}
+// TODO: incluir el resto de atributos
+//	private Usuario autor;
+//	private Curso curso;
+//	private List<Respuesta> respuestas = new ArrayList<>();
 }
