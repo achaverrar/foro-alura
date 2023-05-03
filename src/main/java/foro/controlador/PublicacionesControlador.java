@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import foro.dto.DatosNuevaPublicacion;
 import foro.modelo.Publicacion;
 import foro.repositorio.PublicacionRepositorio;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/publicaciones")
@@ -17,7 +18,7 @@ public class PublicacionesControlador {
 	private PublicacionRepositorio publicacionRepositorio;
 
 	@PostMapping
-	public void crearPublicacion(@RequestBody DatosNuevaPublicacion datosPublicacion) {
+	public void crearPublicacion(@RequestBody @Valid DatosNuevaPublicacion datosPublicacion) {
 		publicacionRepositorio.save(new Publicacion(datosPublicacion));
 	}
 }
