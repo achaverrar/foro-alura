@@ -11,16 +11,19 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import foro.dto.DatosActualizacionPublicacion;
 import foro.dto.DatosListadoPublicaciones;
 import foro.dto.DatosNuevaPublicacion;
 import foro.dto.DatosRespuestaPublicacion;
 import foro.modelo.Publicacion;
 import foro.repositorio.PublicacionRepositorio;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 
 @RestController
@@ -55,4 +58,12 @@ public class PublicacionesControlador {
 		URI url = uriComponentsBuilder.path("/publicaciones{id}").buildAndExpand(publicacion.getId()).toUri();
 		return ResponseEntity.created(url).body(datosRespuestaPublicacion);
 	}
+
+	@PutMapping
+	@Transactional
+	public ResponseEntity<DatosRespuestaPublicacion> editarPublicacion(@RequestBody @Valid DatosActualizacionPublicacion datosPublicacion) {
+        Publicacion publicacion = publicacionRepositorio.getReferenceById(datosPublicacion.id());
+        publicacion.editarPublicacion(datosPublicacion);
+        return ResponseEntity.ok(new DatosRespuestaPublicacion(publicacion));
+    }
 }
