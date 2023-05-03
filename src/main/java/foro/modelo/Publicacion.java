@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 //import java.util.ArrayList;
 //import java.util.List;
 
+import foro.dto.DatosActualizacionPublicacion;
 import foro.dto.DatosNuevaPublicacion;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -14,6 +15,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -46,6 +48,15 @@ public class Publicacion {
 	public Publicacion(DatosNuevaPublicacion datosPublicacion) {
 		this.titulo = datosPublicacion.titulo();
 		this.mensaje = datosPublicacion.mensaje();
+	}
+
+	public void editarPublicacion(DatosActualizacionPublicacion datosPublicacion) {
+		if(datosPublicacion.titulo() != null) {
+			this.titulo = datosPublicacion.titulo();			
+		}
+		if(datosPublicacion.mensaje() != null) {
+			this.mensaje = datosPublicacion.mensaje();			
+		}
 	}
 
 // TODO: incluir el resto de atributos
