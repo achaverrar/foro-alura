@@ -9,6 +9,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,6 +33,12 @@ public class PublicacionesControlador {
 	public Page<DatosListadoPublicaciones> listarPublicaciones(
 			@PageableDefault(size = 1, sort = {"fechaCreacion"}, direction = Direction.DESC) Pageable paginacion) {
 		return publicacionRepositorio.findAll(paginacion).map(DatosListadoPublicaciones::new);
+	}
+
+	@GetMapping("/{id}")
+	public ResponseEntity<DatosListadoPublicaciones> encontrarPublicacionPorId(@PathVariable Long id) {
+		Publicacion publicacion = publicacionRepositorio.getReferenceById(id);
+		return ResponseEntity.ok(new DatosListadoPublicaciones(publicacion));
 	}
 
 	@PostMapping
