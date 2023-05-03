@@ -4,8 +4,8 @@ import java.time.LocalDateTime;
 //import java.util.ArrayList;
 //import java.util.List;
 
-import foro.dto.DatosActualizacionPublicacion;
-import foro.dto.DatosNuevaPublicacion;
+import foro.dto.publicaciones.DatosActualizacionPublicacion;
+import foro.dto.publicaciones.DatosNuevaPublicacion;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;

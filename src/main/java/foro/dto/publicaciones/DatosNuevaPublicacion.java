@@ -1,4 +1,4 @@
-package foro.dto;
+package foro.dto.publicaciones;
 
 import foro.modelo.Publicacion;
 import jakarta.validation.constraints.NotBlank;

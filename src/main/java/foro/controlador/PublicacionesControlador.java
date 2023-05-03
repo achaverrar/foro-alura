@@ -18,10 +18,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import foro.dto.DatosActualizacionPublicacion;
-import foro.dto.DatosListadoPublicaciones;
-import foro.dto.DatosNuevaPublicacion;
-import foro.dto.DatosRespuestaPublicacion;
+import foro.dto.publicaciones.DatosActualizacionPublicacion;
+import foro.dto.publicaciones.DatosListadoPublicaciones;
+import foro.dto.publicaciones.DatosNuevaPublicacion;
+import foro.dto.publicaciones.DatosRespuestaPublicacion;
 import foro.modelo.Publicacion;
 import foro.repositorio.PublicacionRepositorio;
 import jakarta.transaction.Transactional;
