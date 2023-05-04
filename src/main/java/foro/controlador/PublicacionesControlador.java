@@ -22,57 +22,49 @@ import foro.dto.publicaciones.DatosActualizacionPublicacion;
 import foro.dto.publicaciones.DatosListadoPublicaciones;
 import foro.dto.publicaciones.DatosNuevaPublicacion;
 import foro.dto.publicaciones.DatosRespuestaPublicacion;
-import foro.modelo.Publicacion;
-import foro.repositorio.PublicacionRepositorio;
+import foro.servicios.PublicacionServicio;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/publicaciones")
 public class PublicacionesControlador {
+
 	@Autowired
-	private PublicacionRepositorio publicacionRepositorio;
+	private PublicacionServicio publicacionServicio;
 
 	@GetMapping
-	public Page<DatosListadoPublicaciones> listarPublicaciones(
+	public ResponseEntity<Page<DatosListadoPublicaciones>> listarPublicaciones(
 			@PageableDefault(size = 1, sort = {"fechaCreacion"}, direction = Direction.DESC) Pageable paginacion) {
-		return publicacionRepositorio.findAll(paginacion).map(DatosListadoPublicaciones::new);
+		var pagina = publicacionServicio.listarPublicaciones(paginacion); 
+		return ResponseEntity.ok(pagina);
 	}
 
 	@GetMapping("/{id}")
 	public ResponseEntity<DatosListadoPublicaciones> encontrarPublicacionPorId(@PathVariable Long id) {
-		Publicacion publicacion = publicacionRepositorio.getReferenceById(id);
-		return ResponseEntity.ok(new DatosListadoPublicaciones(publicacion));
+		DatosListadoPublicaciones publicacion = publicacionServicio.encontrarPublicacionPorId(id);
+		return ResponseEntity.ok(publicacion);
 	}
 
 	@PostMapping
+	@Transactional
 	public ResponseEntity<DatosRespuestaPublicacion> crearPublicacion(@RequestBody @Valid DatosNuevaPublicacion datosPublicacion, UriComponentsBuilder uriComponentsBuilder) {
-		Publicacion publicacion = publicacionRepositorio.save(new Publicacion(datosPublicacion));
-
-		DatosRespuestaPublicacion datosRespuestaPublicacion = new DatosRespuestaPublicacion(
-				publicacion.getId(), 
-				publicacion.getTitulo(), 
-				publicacion.getMensaje(), 
-				publicacion.getFechaCreacion(), 
-				publicacion.getEstado());
-
-		URI url = uriComponentsBuilder.path("/publicaciones{id}").buildAndExpand(publicacion.getId()).toUri();
-		return ResponseEntity.created(url).body(datosRespuestaPublicacion);
+		DatosRespuestaPublicacion publicacion = publicacionServicio.crearPublicacion(datosPublicacion);
+		URI url = uriComponentsBuilder.path("/publicaciones{id}").buildAndExpand(publicacion.id()).toUri();
+		return ResponseEntity.created(url).body(publicacion);
 	}
 
 	@PutMapping
 	@Transactional
 	public ResponseEntity<DatosRespuestaPublicacion> editarPublicacion(@RequestBody @Valid DatosActualizacionPublicacion datosPublicacion) {
-        Publicacion publicacion = publicacionRepositorio.getReferenceById(datosPublicacion.id());
-        publicacion.editarPublicacion(datosPublicacion);
-        return ResponseEntity.ok(new DatosRespuestaPublicacion(publicacion));
+		DatosRespuestaPublicacion publicacion = publicacionServicio.editarPublicacion(datosPublicacion);
+        return ResponseEntity.ok(publicacion);
     }
 
 	@DeleteMapping("/{id}")
 	@Transactional
 	public ResponseEntity eliminarPublicacion(@PathVariable Long id) {
-		Publicacion publicacion = publicacionRepositorio.getReferenceById(id);
-		publicacionRepositorio.delete(publicacion);
+		publicacionServicio.eliminarPublicacion(id);
 		return ResponseEntity.noContent().build();
 	}
 }
