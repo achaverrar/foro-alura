@@ -3,7 +3,13 @@ package foro.controlador;
 import java.net.URI;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +26,13 @@ import jakarta.validation.Valid;
 public class RespuestasControlador {
 	@Autowired
 	private RespuestaServicio respuestaServicio;
+
+	@GetMapping("/publicaciones/{publicacionId}")
+	public ResponseEntity<Page<DatosRespuesta>> listarRespuestasPorPublicacionId(@PathVariable(name="publicacionId") Long id,
+			@PageableDefault(size = 10, sort = {"fechaCreacion"}, direction = Direction.ASC) Pageable paginacion) {
+		var pagina = respuestaServicio.listarRespuestasPorPublicacionId(id, paginacion);
+		return ResponseEntity.ok(pagina);
+	}
 
 	@PostMapping
 	public ResponseEntity<DatosRespuesta> crearRespuesta(@RequestBody @Valid DatosNuevaRespuesta datosRespuesta, UriComponentsBuilder uriComponentsBuilder) {
