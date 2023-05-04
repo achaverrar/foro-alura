@@ -1,11 +1,12 @@
 package foro.modelo;
 
 import java.time.LocalDateTime;
-//import java.util.ArrayList;
-//import java.util.List;
+import java.util.ArrayList;
+import java.util.List;
 
 import foro.dto.publicaciones.DatosActualizacionPublicacion;
 import foro.dto.publicaciones.DatosNuevaPublicacion;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -13,9 +14,9 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
-import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -44,6 +45,9 @@ public class Publicacion {
 	@Enumerated(EnumType.STRING)
 	@Column(name = "estado")
 	private EstadoPublicacion estado = EstadoPublicacion.NO_RESPONDIDO;
+	
+	@OneToMany(mappedBy = "publicacion", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Respuesta> respuestas = new ArrayList<>();
 
 	public Publicacion(DatosNuevaPublicacion datosPublicacion) {
 		this.titulo = datosPublicacion.titulo();
@@ -62,5 +66,4 @@ public class Publicacion {
 // TODO: incluir el resto de atributos
 //	private Usuario autor;
 //	private Curso curso;
-//	private List<Respuesta> respuestas = new ArrayList<>();
 }
