@@ -1,6 +1,8 @@
 package foro.servicios;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import foro.dto.respuestas.DatosNuevaRespuesta;
@@ -25,4 +27,7 @@ public class RespuestaServicio {
 		return new DatosRespuesta(respuesta);
 	}
 
+	public Page<DatosRespuesta> listarRespuestasPorPublicacionId(Long id, Pageable paginacion) {
+		return respuestaRepositorio.findAllByPublicacionId(id, paginacion).map(DatosRespuesta::new);
+	}
 }
