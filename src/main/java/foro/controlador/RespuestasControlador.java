@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import foro.dto.respuestas.DatosNuevaRespuesta;
+import foro.dto.respuestas.DatosCrearRespuesta;
 import foro.dto.respuestas.DatosCompletosRespuesta;
 import foro.servicios.RespuestaServicio;
 import jakarta.validation.Valid;
@@ -35,7 +35,7 @@ public class RespuestasControlador {
 	}
 
 	@PostMapping
-	public ResponseEntity<DatosCompletosRespuesta> crearRespuesta(@RequestBody @Valid DatosNuevaRespuesta datosRespuesta, UriComponentsBuilder uriComponentsBuilder) {
+	public ResponseEntity<DatosCompletosRespuesta> crearRespuesta(@RequestBody @Valid DatosCrearRespuesta datosRespuesta, UriComponentsBuilder uriComponentsBuilder) {
 		DatosCompletosRespuesta respuesta = respuestaServicio.crearRespuesta(datosRespuesta);
 
 		URI url = uriComponentsBuilder.path("/respuestas{id}").buildAndExpand(respuesta.id()).toUri();

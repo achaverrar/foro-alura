@@ -4,7 +4,7 @@ import foro.modelo.Respuesta;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-public record DatosNuevaRespuesta(
+public record DatosCrearRespuesta(
 		@NotBlank(message = "El mensaje es obligatorio")
 		String mensaje,
 
@@ -12,7 +12,7 @@ public record DatosNuevaRespuesta(
 		Long publicacion_id
 		) {
 
-	public DatosNuevaRespuesta(Respuesta respuesta) {
+	public DatosCrearRespuesta(Respuesta respuesta) {
 		this(respuesta.getMensaje(), respuesta.getPublicacion().getId());
 	}
 
