@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import foro.dto.publicaciones.DatosActualizacionPublicacion;
-import foro.dto.publicaciones.DatosListadoPublicaciones;
+import foro.dto.publicaciones.DatosResumidosPublicacion;
 import foro.dto.publicaciones.DatosNuevaPublicacion;
 import foro.dto.publicaciones.DatosRespuestaPublicacion;
 import foro.servicios.PublicacionServicio;
@@ -34,15 +34,15 @@ public class PublicacionesControlador {
 	private PublicacionServicio publicacionServicio;
 
 	@GetMapping
-	public ResponseEntity<Page<DatosListadoPublicaciones>> listarPublicaciones(
-			@PageableDefault(size = 1, sort = {"fechaCreacion"}, direction = Direction.DESC) Pageable paginacion) {
+	public ResponseEntity<Page<DatosResumidosPublicacion>> listarPublicaciones(
+			@PageableDefault(size = 25, sort = {"fechaCreacion"}, direction = Direction.DESC) Pageable paginacion) {
 		var pagina = publicacionServicio.listarPublicaciones(paginacion); 
 		return ResponseEntity.ok(pagina);
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<DatosListadoPublicaciones> encontrarPublicacionPorId(@PathVariable Long id) {
-		DatosListadoPublicaciones publicacion = publicacionServicio.encontrarPublicacionPorId(id);
+	public ResponseEntity<DatosResumidosPublicacion> encontrarPublicacionPorId(@PathVariable Long id) {
+		DatosResumidosPublicacion publicacion = publicacionServicio.encontrarPublicacionPorId(id);
 		return ResponseEntity.ok(publicacion);
 	}
 

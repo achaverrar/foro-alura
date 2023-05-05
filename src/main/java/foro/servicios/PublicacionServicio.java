@@ -6,7 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import foro.dto.publicaciones.DatosActualizacionPublicacion;
-import foro.dto.publicaciones.DatosListadoPublicaciones;
+import foro.dto.publicaciones.DatosResumidosPublicacion;
 import foro.dto.publicaciones.DatosNuevaPublicacion;
 import foro.dto.publicaciones.DatosRespuestaPublicacion;
 import foro.modelo.Publicacion;
@@ -18,13 +18,13 @@ public class PublicacionServicio {
 	@Autowired
 	private PublicacionRepositorio publicacionRepositorio;
 
-	public Page<DatosListadoPublicaciones> listarPublicaciones(Pageable paginacion) {
-		return publicacionRepositorio.findAll(paginacion).map(DatosListadoPublicaciones::new);
+	public Page<DatosResumidosPublicacion> listarPublicaciones(Pageable paginacion) {
+		return publicacionRepositorio.findAll(paginacion).map(DatosResumidosPublicacion::new);
 	}
 
-	public DatosListadoPublicaciones encontrarPublicacionPorId(Long id) {
+	public DatosResumidosPublicacion encontrarPublicacionPorId(Long id) {
 		Publicacion publicacion = publicacionRepositorio.getReferenceById(id);
-		return new DatosListadoPublicaciones(publicacion);
+		return new DatosResumidosPublicacion(publicacion);
 	}
 
 	public DatosRespuestaPublicacion crearPublicacion(DatosNuevaPublicacion datosPublicacion) {
