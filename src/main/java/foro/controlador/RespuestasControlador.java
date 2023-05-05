@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import foro.dto.respuestas.DatosNuevaRespuesta;
-import foro.dto.respuestas.DatosRespuesta;
+import foro.dto.respuestas.DatosCompletosRespuesta;
 import foro.servicios.RespuestaServicio;
 import jakarta.validation.Valid;
 
@@ -28,15 +28,15 @@ public class RespuestasControlador {
 	private RespuestaServicio respuestaServicio;
 
 	@GetMapping("/publicaciones/{publicacionId}")
-	public ResponseEntity<Page<DatosRespuesta>> listarRespuestasPorPublicacionId(@PathVariable(name="publicacionId") Long id,
+	public ResponseEntity<Page<DatosCompletosRespuesta>> listarRespuestasPorPublicacionId(@PathVariable(name="publicacionId") Long id,
 			@PageableDefault(size = 10, sort = {"fechaCreacion"}, direction = Direction.ASC) Pageable paginacion) {
 		var pagina = respuestaServicio.listarRespuestasPorPublicacionId(id, paginacion);
 		return ResponseEntity.ok(pagina);
 	}
 
 	@PostMapping
-	public ResponseEntity<DatosRespuesta> crearRespuesta(@RequestBody @Valid DatosNuevaRespuesta datosRespuesta, UriComponentsBuilder uriComponentsBuilder) {
-		DatosRespuesta respuesta = respuestaServicio.crearRespuesta(datosRespuesta);
+	public ResponseEntity<DatosCompletosRespuesta> crearRespuesta(@RequestBody @Valid DatosNuevaRespuesta datosRespuesta, UriComponentsBuilder uriComponentsBuilder) {
+		DatosCompletosRespuesta respuesta = respuestaServicio.crearRespuesta(datosRespuesta);
 
 		URI url = uriComponentsBuilder.path("/respuestas{id}").buildAndExpand(respuesta.id()).toUri();
 		return ResponseEntity.created(url).body(respuesta);

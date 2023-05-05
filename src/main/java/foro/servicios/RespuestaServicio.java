@@ -6,7 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import foro.dto.respuestas.DatosNuevaRespuesta;
-import foro.dto.respuestas.DatosRespuesta;
+import foro.dto.respuestas.DatosCompletosRespuesta;
 import foro.modelo.Publicacion;
 import foro.modelo.Respuesta;
 import foro.repositorio.PublicacionRepositorio;
@@ -21,13 +21,13 @@ public class RespuestaServicio {
 	@Autowired
 	private PublicacionRepositorio publicacionRepositorio;
 
-	public DatosRespuesta crearRespuesta(DatosNuevaRespuesta datosRespuesta) {
+	public DatosCompletosRespuesta crearRespuesta(DatosNuevaRespuesta datosRespuesta) {
 		Publicacion publicacion = publicacionRepositorio.getReferenceById(datosRespuesta.publicacion_id());
 		Respuesta respuesta = respuestaRepositorio.save(new Respuesta(datosRespuesta.mensaje(), publicacion));
-		return new DatosRespuesta(respuesta);
+		return new DatosCompletosRespuesta(respuesta);
 	}
 
-	public Page<DatosRespuesta> listarRespuestasPorPublicacionId(Long id, Pageable paginacion) {
-		return respuestaRepositorio.findAllByPublicacionId(id, paginacion).map(DatosRespuesta::new);
+	public Page<DatosCompletosRespuesta> listarRespuestasPorPublicacionId(Long id, Pageable paginacion) {
+		return respuestaRepositorio.findAllByPublicacionId(id, paginacion).map(DatosCompletosRespuesta::new);
 	}
 }
