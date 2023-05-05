@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import foro.dto.publicaciones.DatosActualizacionPublicacion;
-import foro.dto.publicaciones.DatosNuevaPublicacion;
+import foro.dto.publicaciones.DatosCrearPublicacion;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -49,7 +49,7 @@ public class Publicacion {
 	@OneToMany(mappedBy = "publicacion", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Respuesta> respuestas = new ArrayList<>();
 
-	public Publicacion(DatosNuevaPublicacion datosPublicacion) {
+	public Publicacion(DatosCrearPublicacion datosPublicacion) {
 		this.titulo = datosPublicacion.titulo();
 		this.mensaje = datosPublicacion.mensaje();
 	}
