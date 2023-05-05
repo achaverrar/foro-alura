@@ -48,8 +48,8 @@ public class PublicacionesControlador {
 
 	@PostMapping
 	@Transactional
-	public ResponseEntity<DatosRespuestaPublicacion> crearPublicacion(@RequestBody @Valid DatosCrearPublicacion datosPublicacion, UriComponentsBuilder uriComponentsBuilder) {
-		DatosRespuestaPublicacion publicacion = publicacionServicio.crearPublicacion(datosPublicacion);
+	public ResponseEntity<DatosResumidosPublicacion> crearPublicacion(@RequestBody @Valid DatosCrearPublicacion datosPublicacion, UriComponentsBuilder uriComponentsBuilder) {
+		DatosResumidosPublicacion publicacion = publicacionServicio.crearPublicacion(datosPublicacion);
 		URI url = uriComponentsBuilder.path("/publicaciones{id}").buildAndExpand(publicacion.id()).toUri();
 		return ResponseEntity.created(url).body(publicacion);
 	}
