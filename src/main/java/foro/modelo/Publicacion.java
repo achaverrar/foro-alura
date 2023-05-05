@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import foro.dto.publicaciones.DatosActualizacionPublicacion;
+import foro.dto.publicaciones.DatosEditarPublicacion;
 import foro.dto.publicaciones.DatosCrearPublicacion;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -54,7 +54,7 @@ public class Publicacion {
 		this.mensaje = datosPublicacion.mensaje();
 	}
 
-	public void editarPublicacion(DatosActualizacionPublicacion datosPublicacion) {
+	public void editarPublicacion(DatosEditarPublicacion datosPublicacion) {
 		if(datosPublicacion.titulo() != null) {
 			this.titulo = datosPublicacion.titulo();			
 		}
