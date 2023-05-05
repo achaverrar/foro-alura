@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import foro.dto.publicaciones.DatosEditarPublicacion;
 import foro.dto.publicaciones.DatosResumidosPublicacion;
 import foro.dto.publicaciones.DatosCrearPublicacion;
-import foro.dto.publicaciones.DatosRespuestaPublicacion;
+import foro.dto.publicaciones.DatosCompletosPublicacion;
 import foro.modelo.Publicacion;
 import foro.repositorio.PublicacionRepositorio;
 

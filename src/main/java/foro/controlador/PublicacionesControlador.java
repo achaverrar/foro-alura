@@ -21,7 +21,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import foro.dto.publicaciones.DatosEditarPublicacion;
 import foro.dto.publicaciones.DatosResumidosPublicacion;
 import foro.dto.publicaciones.DatosCrearPublicacion;
-import foro.dto.publicaciones.DatosRespuestaPublicacion;
+import foro.dto.publicaciones.DatosCompletosPublicacion;
 import foro.servicios.PublicacionServicio;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
