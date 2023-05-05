@@ -56,8 +56,8 @@ public class PublicacionesControlador {
 
 	@PutMapping
 	@Transactional
-	public ResponseEntity<DatosRespuestaPublicacion> editarPublicacion(@RequestBody @Valid DatosEditarPublicacion datosPublicacion) {
-		DatosRespuestaPublicacion publicacion = publicacionServicio.editarPublicacion(datosPublicacion);
+	public ResponseEntity<DatosResumidosPublicacion> editarPublicacion(@RequestBody @Valid DatosEditarPublicacion datosPublicacion) {
+		DatosResumidosPublicacion publicacion = publicacionServicio.editarPublicacion(datosPublicacion);
         return ResponseEntity.ok(publicacion);
     }
 

@@ -41,10 +41,10 @@ public class PublicacionServicio {
 		return datosResumidosPublicacion;
 	}
 
-	public DatosRespuestaPublicacion editarPublicacion(DatosEditarPublicacion datosPublicacion) {
+	public DatosResumidosPublicacion editarPublicacion(DatosEditarPublicacion datosPublicacion) {
         Publicacion publicacion = publicacionRepositorio.getReferenceById(datosPublicacion.id());
         publicacion.editarPublicacion(datosPublicacion);
-        return new DatosRespuestaPublicacion(publicacion);
+        return new DatosResumidosPublicacion(publicacion);
     }
 
 	public void eliminarPublicacion(Long id) {
