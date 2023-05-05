@@ -63,6 +63,10 @@ public class Publicacion {
 		}
 	}
 
+	public int calcularTotalRespuestas() {
+		return this.respuestas.size();
+	}
+
 // TODO: incluir el resto de atributos
 //	private Usuario autor;
 //	private Curso curso;
