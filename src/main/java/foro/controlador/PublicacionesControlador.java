@@ -41,8 +41,8 @@ public class PublicacionesControlador {
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<DatosResumidosPublicacion> encontrarPublicacionPorId(@PathVariable Long id) {
-		DatosResumidosPublicacion publicacion = publicacionServicio.encontrarPublicacionPorId(id);
+	public ResponseEntity<DatosCompletosPublicacion> encontrarPublicacionPorId(@PathVariable Long id) {
+		DatosCompletosPublicacion publicacion = publicacionServicio.encontrarPublicacionPorId(id);
 		return ResponseEntity.ok(publicacion);
 	}
 

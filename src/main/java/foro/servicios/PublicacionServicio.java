@@ -22,9 +22,9 @@ public class PublicacionServicio {
 		return publicacionRepositorio.findAll(paginacion).map(DatosResumidosPublicacion::new);
 	}
 
-	public DatosResumidosPublicacion encontrarPublicacionPorId(Long id) {
+	public DatosCompletosPublicacion encontrarPublicacionPorId(Long id) {
 		Publicacion publicacion = publicacionRepositorio.getReferenceById(id);
-		return new DatosResumidosPublicacion(publicacion);
+		return new DatosCompletosPublicacion(publicacion);
 	}
 
 	public DatosResumidosPublicacion crearPublicacion(DatosCrearPublicacion datosPublicacion) {
