@@ -8,12 +8,13 @@ import foro.modelo.EstadoPublicacion;
 import foro.modelo.Publicacion;
 
 public record DatosCompletosPublicacion(
-		Long id, 
+		Long publicacionId, 
 		String titulo, 
 		String mensaje, 
 		LocalDateTime fechaCreacion, 
 		EstadoPublicacion estado, 
-		List<DatosResumidosRespuesta> respuestas) {
+		List<DatosResumidosRespuesta> respuestas,
+		Long cursoId) {
 
 	public DatosCompletosPublicacion(Publicacion publicacion) {
 		this(
@@ -22,6 +23,7 @@ public record DatosCompletosPublicacion(
 				publicacion.getMensaje(), 
 				publicacion.getFechaCreacion(), 
 				publicacion.getEstado(), 
-				publicacion.getRespuestas().stream().map(DatosResumidosRespuesta::new).toList());
+				publicacion.getRespuestas().stream().map(DatosResumidosRespuesta::new).toList(),
+				publicacion.getCurso().getId());
 	}
 }

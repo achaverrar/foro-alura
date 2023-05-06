@@ -54,7 +54,7 @@ public class PublicacionControlador {
 
 			UriComponentsBuilder uriComponentsBuilder) {
 		DatosResumidosPublicacion publicacion = publicacionServicio.crearPublicacion(datosPublicacion);
-		URI url = uriComponentsBuilder.path("/publicaciones{id}").buildAndExpand(publicacion.id()).toUri();
+		URI url = uriComponentsBuilder.path("/publicaciones{id}").buildAndExpand(publicacion.publicacionId()).toUri();
 		return ResponseEntity.created(url).body(publicacion);
 	}
 
