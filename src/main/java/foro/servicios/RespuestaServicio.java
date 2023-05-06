@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import foro.dto.respuestas.DatosGuardarRespuesta;
 import foro.dto.respuestas.DatosCompletosRespuesta;
+import foro.modelo.EstadoPublicacion;
 import foro.modelo.Publicacion;
 import foro.modelo.Respuesta;
 import foro.repositorio.PublicacionRepositorio;
@@ -23,6 +24,10 @@ public class RespuestaServicio {
 
 	public DatosCompletosRespuesta crearRespuesta(Long publicacionId, DatosGuardarRespuesta datosRespuesta) {
 		Publicacion publicacion = publicacionRepositorio.getReferenceById(publicacionId);
+
+		if(publicacion.getEstado().equals(EstadoPublicacion.NO_RESPONDIDO)) {
+			publicacion.setEstado(EstadoPublicacion.NO_SOLUCIONADO);
+		}
 
 		Respuesta respuesta = new Respuesta();
 		respuesta.setMensaje(datosRespuesta.mensaje());
@@ -53,4 +58,5 @@ public class RespuestaServicio {
 
 		return new DatosCompletosRespuesta(respuesta);
 	}
+
 }

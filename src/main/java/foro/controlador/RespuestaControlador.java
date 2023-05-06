@@ -45,6 +45,7 @@ public class RespuestaControlador {
 	}
 
 	@PostMapping("/{publicacionId}/respuestas")
+	@Transactional
 	public ResponseEntity<DatosCompletosRespuesta> crearRespuesta(
 			@PathVariable Long publicacionId, 
 			@RequestBody @Valid DatosGuardarRespuesta datosRespuesta, 
