@@ -48,11 +48,6 @@ public class Publicacion {
 	@OneToMany(mappedBy = "publicacion", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Respuesta> respuestas = new ArrayList<>();
 
-	public Publicacion(DatosGuardarPublicacion datosPublicacion) {
-		this.titulo = datosPublicacion.titulo();
-		this.mensaje = datosPublicacion.mensaje();
-	}
-
 	public void editarPublicacion(DatosGuardarPublicacion datosPublicacion) {
 		this.titulo = datosPublicacion.titulo();
 		this.mensaje = datosPublicacion.mensaje();

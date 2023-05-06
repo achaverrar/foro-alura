@@ -27,15 +27,13 @@ public class PublicacionServicio {
 	}
 
 	public DatosResumidosPublicacion crearPublicacion(DatosGuardarPublicacion datosPublicacion) {
-		Publicacion publicacion = publicacionRepositorio.save(new Publicacion(datosPublicacion));
+		Publicacion publicacion = new Publicacion();
+		publicacion.setTitulo(datosPublicacion.titulo());
+		publicacion.setMensaje(datosPublicacion.mensaje());
+		
+		publicacionRepositorio.save(publicacion);
 
-		DatosResumidosPublicacion datosResumidosPublicacion = new DatosResumidosPublicacion(
-				publicacion.getId(), 
-				publicacion.getTitulo(), 
-				publicacion.getMensaje(), 
-				publicacion.getFechaCreacion(), 
-				publicacion.getEstado(),
-				publicacion.calcularTotalRespuestas());
+		DatosResumidosPublicacion datosResumidosPublicacion = new DatosResumidosPublicacion(publicacion);
 
 		return datosResumidosPublicacion;
 	}
