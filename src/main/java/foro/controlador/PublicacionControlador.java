@@ -66,4 +66,14 @@ public class PublicacionControlador {
 		publicacionServicio.eliminarPublicacion(id);
 		return ResponseEntity.noContent().build();
 	}
+
+	@PostMapping("{publicacionId}/solucion/{respuestaId}")
+	@Transactional
+	public ResponseEntity solucionarPublicacion(
+			@PathVariable Long publicacionId,
+			@PathVariable Long respuestaId) {
+		publicacionServicio.solucionarPublicacion(publicacionId, respuestaId);
+		return ResponseEntity.noContent().build();
+	}
+
 }
