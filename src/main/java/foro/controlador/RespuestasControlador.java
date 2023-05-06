@@ -1,6 +1,8 @@
 package foro.controlador;
 
 import java.net.URI;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -22,23 +24,42 @@ import foro.servicios.RespuestaServicio;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/respuestas")
+@RequestMapping("/publicaciones")
 public class RespuestasControlador {
 	@Autowired
 	private RespuestaServicio respuestaServicio;
 
-	@GetMapping("/publicaciones/{publicacionId}")
-	public ResponseEntity<Page<DatosCompletosRespuesta>> listarRespuestasPorPublicacionId(@PathVariable(name="publicacionId") Long id,
-			@PageableDefault(size = 10, sort = {"fechaCreacion"}, direction = Direction.ASC) Pageable paginacion) {
-		var pagina = respuestaServicio.listarRespuestasPorPublicacionId(id, paginacion);
+	@GetMapping("/{publicacionId}/respuestas")
+	public ResponseEntity<Page<DatosCompletosRespuesta>> listarRespuestasPorPublicacionId(
+			@PathVariable Long publicacionId,
+
+			@PageableDefault(
+					size = 10, 
+					sort = {"fechaCreacion"}, 
+					direction = Direction.ASC) Pageable paginacion) {
+
+		var pagina = respuestaServicio.listarRespuestasPorPublicacionId(publicacionId, paginacion);
 		return ResponseEntity.ok(pagina);
 	}
 
-	@PostMapping
-	public ResponseEntity<DatosCompletosRespuesta> crearRespuesta(@RequestBody @Valid DatosCrearRespuesta datosRespuesta, UriComponentsBuilder uriComponentsBuilder) {
+	@PostMapping("/{publicacionId}/respuestas")
+	public ResponseEntity<DatosCompletosRespuesta> crearRespuesta(
+			@PathVariable Long publicacionId, 
+			@RequestBody @Valid DatosCrearRespuesta datosRespuesta, 
+			UriComponentsBuilder uriComponentsBuilder) {
+
 		DatosCompletosRespuesta respuesta = respuestaServicio.crearRespuesta(datosRespuesta);
 
-		URI url = uriComponentsBuilder.path("/respuestas{id}").buildAndExpand(respuesta.id()).toUri();
+		Map<String, Long> parametrosUrl = new HashMap<>();
+
+		parametrosUrl.put("publicacionId", publicacionId);
+		parametrosUrl.put("respuestaId", respuesta.id());
+
+		URI url = uriComponentsBuilder
+				.path("/publicaciones/{publicacionId}/respuestas/{respuestaId}")
+				.buildAndExpand(parametrosUrl)
+				.toUri();
+		System.out.println(url);
 		return ResponseEntity.created(url).body(respuesta);
 	}
 
