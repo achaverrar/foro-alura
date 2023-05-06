@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import foro.dto.publicaciones.DatosGuardarPublicacion;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -47,11 +46,6 @@ public class Publicacion {
 
 	@OneToMany(mappedBy = "publicacion", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Respuesta> respuestas = new ArrayList<>();
-
-	public void editarPublicacion(DatosGuardarPublicacion datosPublicacion) {
-		this.titulo = datosPublicacion.titulo();
-		this.mensaje = datosPublicacion.mensaje();
-	}
 
 	public int calcularTotalRespuestas() {
 		return this.respuestas.size();

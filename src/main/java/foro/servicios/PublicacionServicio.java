@@ -30,7 +30,7 @@ public class PublicacionServicio {
 		Publicacion publicacion = new Publicacion();
 		publicacion.setTitulo(datosPublicacion.titulo());
 		publicacion.setMensaje(datosPublicacion.mensaje());
-		
+
 		publicacionRepositorio.save(publicacion);
 
 		DatosResumidosPublicacion datosResumidosPublicacion = new DatosResumidosPublicacion(publicacion);
@@ -40,7 +40,10 @@ public class PublicacionServicio {
 
 	public DatosResumidosPublicacion editarPublicacion(Long id, DatosGuardarPublicacion datosPublicacion) {
         Publicacion publicacion = publicacionRepositorio.getReferenceById(id);
-        publicacion.editarPublicacion(datosPublicacion);
+
+        publicacion.setTitulo(datosPublicacion.titulo());
+        publicacion.setMensaje(datosPublicacion.mensaje());
+
         return new DatosResumidosPublicacion(publicacion);
     }
 
