@@ -36,11 +36,6 @@ public class Respuesta {
 	@JoinColumn(name = "publicacion_id", nullable = false)
 	private Publicacion publicacion;
 
-	public Respuesta(String mensaje, Publicacion publicacion) {
-		this.mensaje = mensaje;
-		this.publicacion = publicacion;
-	}
-
 	// TODO: incluir el resto de atributos
 //	private Usuario autor;
 }

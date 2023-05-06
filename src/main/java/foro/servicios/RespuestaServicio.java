@@ -23,7 +23,13 @@ public class RespuestaServicio {
 
 	public DatosCompletosRespuesta crearRespuesta(Long publicacionId, DatosGuardarRespuesta datosRespuesta) {
 		Publicacion publicacion = publicacionRepositorio.getReferenceById(publicacionId);
-		Respuesta respuesta = respuestaRepositorio.save(new Respuesta(datosRespuesta.mensaje(), publicacion));
+
+		Respuesta respuesta = new Respuesta();
+		respuesta.setMensaje(datosRespuesta.mensaje());
+		respuesta.setPublicacion(publicacion);
+
+		respuestaRepositorio.save(respuesta);
+
 		return new DatosCompletosRespuesta(respuesta);
 	}
 
