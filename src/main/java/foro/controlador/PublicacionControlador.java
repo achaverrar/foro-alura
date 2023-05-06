@@ -27,7 +27,7 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/publicaciones")
-public class PublicacionesControlador {
+public class PublicacionControlador {
 
 	@Autowired
 	private PublicacionServicio publicacionServicio;
