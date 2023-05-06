@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import foro.dto.publicaciones.DatosEditarPublicacion;
 import foro.dto.publicaciones.DatosResumidosPublicacion;
 import foro.dto.publicaciones.DatosGuardarPublicacion;
 import foro.dto.publicaciones.DatosCompletosPublicacion;
@@ -56,7 +55,7 @@ public class PublicacionesControlador {
 
 	@PutMapping("/{id}")
 	@Transactional
-	public ResponseEntity<DatosResumidosPublicacion> editarPublicacion(@PathVariable Long id, @RequestBody @Valid DatosEditarPublicacion datosPublicacion) {
+	public ResponseEntity<DatosResumidosPublicacion> editarPublicacion(@PathVariable Long id, @RequestBody @Valid DatosGuardarPublicacion datosPublicacion) {
 		DatosResumidosPublicacion publicacion = publicacionServicio.editarPublicacion(id, datosPublicacion);
         return ResponseEntity.ok(publicacion);
     }

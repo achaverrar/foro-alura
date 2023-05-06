@@ -5,7 +5,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import foro.dto.publicaciones.DatosEditarPublicacion;
 import foro.dto.publicaciones.DatosResumidosPublicacion;
 import foro.dto.publicaciones.DatosGuardarPublicacion;
 import foro.dto.publicaciones.DatosCompletosPublicacion;
@@ -41,7 +40,7 @@ public class PublicacionServicio {
 		return datosResumidosPublicacion;
 	}
 
-	public DatosResumidosPublicacion editarPublicacion(Long id, DatosEditarPublicacion datosPublicacion) {
+	public DatosResumidosPublicacion editarPublicacion(Long id, DatosGuardarPublicacion datosPublicacion) {
         Publicacion publicacion = publicacionRepositorio.getReferenceById(id);
         publicacion.editarPublicacion(datosPublicacion);
         return new DatosResumidosPublicacion(publicacion);
