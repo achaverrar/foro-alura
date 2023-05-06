@@ -21,8 +21,8 @@ public class RespuestaServicio {
 	@Autowired
 	private PublicacionRepositorio publicacionRepositorio;
 
-	public DatosCompletosRespuesta crearRespuesta(DatosCrearRespuesta datosRespuesta) {
-		Publicacion publicacion = publicacionRepositorio.getReferenceById(datosRespuesta.publicacion_id());
+	public DatosCompletosRespuesta crearRespuesta(Long publicacionId, DatosCrearRespuesta datosRespuesta) {
+		Publicacion publicacion = publicacionRepositorio.getReferenceById(publicacionId);
 		Respuesta respuesta = respuestaRepositorio.save(new Respuesta(datosRespuesta.mensaje(), publicacion));
 		return new DatosCompletosRespuesta(respuesta);
 	}

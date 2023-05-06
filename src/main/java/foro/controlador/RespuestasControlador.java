@@ -48,7 +48,7 @@ public class RespuestasControlador {
 			@RequestBody @Valid DatosCrearRespuesta datosRespuesta, 
 			UriComponentsBuilder uriComponentsBuilder) {
 
-		DatosCompletosRespuesta respuesta = respuestaServicio.crearRespuesta(datosRespuesta);
+		DatosCompletosRespuesta respuesta = respuestaServicio.crearRespuesta(publicacionId, datosRespuesta);
 
 		Map<String, Long> parametrosUrl = new HashMap<>();
 
