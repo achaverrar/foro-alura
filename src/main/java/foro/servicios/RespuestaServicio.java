@@ -36,4 +36,21 @@ public class RespuestaServicio {
 	public Page<DatosCompletosRespuesta> listarRespuestasPorPublicacionId(Long id, Pageable paginacion) {
 		return respuestaRepositorio.findAllByPublicacionId(id, paginacion).map(DatosCompletosRespuesta::new);
 	}
+
+	public DatosCompletosRespuesta editarRespuesta(
+			Long publicacionId, 
+			Long respuestaId,
+			DatosGuardarRespuesta datosRespuesta) {
+
+		// TODO: validar que la publicación exista
+		Publicacion publicacion = publicacionRepositorio.getReferenceById(publicacionId);
+
+		// TODO: validar que la respuesta exista
+		Respuesta respuesta = respuestaRepositorio.getReferenceById(respuestaId);
+
+		// TODO: validar que la respuesta corresponda a la publicación señalada
+		respuesta.setMensaje(datosRespuesta.mensaje());
+
+		return new DatosCompletosRespuesta(respuesta);
+	}
 }

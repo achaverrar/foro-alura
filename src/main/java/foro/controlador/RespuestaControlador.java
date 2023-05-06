@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,6 +22,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import foro.dto.respuestas.DatosGuardarRespuesta;
 import foro.dto.respuestas.DatosCompletosRespuesta;
 import foro.servicios.RespuestaServicio;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 
 @RestController
@@ -63,4 +65,15 @@ public class RespuestaControlador {
 		return ResponseEntity.created(url).body(respuesta);
 	}
 
+	@PutMapping("/{publicacionId}/respuestas/{respuestaId}")
+	@Transactional
+	public ResponseEntity<DatosCompletosRespuesta> editarRespuesta(
+			@PathVariable Long publicacionId,
+			@PathVariable Long respuestaId,
+			@RequestBody @Valid DatosGuardarRespuesta datosRespuesta) {
+
+		DatosCompletosRespuesta respuesta = respuestaServicio.editarRespuesta(publicacionId, respuestaId, datosRespuesta);
+
+		return ResponseEntity.ok(respuesta);
+	}
 }
