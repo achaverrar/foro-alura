@@ -1,12 +1,11 @@
 package foro.dto.publicaciones;
 
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
 
 public record DatosEditarPublicacion(
-		@NotNull(message = "El id es obligatorio") 
-		Long id,
+		@NotBlank(message = "El título es obligatorio")
+		String titulo,
 
-		String titulo, 
-		String mensaje
-		) {
+		@NotBlank(message = "El mensaje es obligatorio")
+		String mensaje) {
 }

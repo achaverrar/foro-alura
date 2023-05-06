@@ -54,10 +54,10 @@ public class PublicacionesControlador {
 		return ResponseEntity.created(url).body(publicacion);
 	}
 
-	@PutMapping
+	@PutMapping("/{id}")
 	@Transactional
-	public ResponseEntity<DatosResumidosPublicacion> editarPublicacion(@RequestBody @Valid DatosEditarPublicacion datosPublicacion) {
-		DatosResumidosPublicacion publicacion = publicacionServicio.editarPublicacion(datosPublicacion);
+	public ResponseEntity<DatosResumidosPublicacion> editarPublicacion(@PathVariable Long id, @RequestBody @Valid DatosEditarPublicacion datosPublicacion) {
+		DatosResumidosPublicacion publicacion = publicacionServicio.editarPublicacion(id, datosPublicacion);
         return ResponseEntity.ok(publicacion);
     }
 

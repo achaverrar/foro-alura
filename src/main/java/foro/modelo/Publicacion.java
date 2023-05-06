@@ -45,7 +45,7 @@ public class Publicacion {
 	@Enumerated(EnumType.STRING)
 	@Column(name = "estado")
 	private EstadoPublicacion estado = EstadoPublicacion.NO_RESPONDIDO;
-	
+
 	@OneToMany(mappedBy = "publicacion", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Respuesta> respuestas = new ArrayList<>();
 
@@ -55,12 +55,8 @@ public class Publicacion {
 	}
 
 	public void editarPublicacion(DatosEditarPublicacion datosPublicacion) {
-		if(datosPublicacion.titulo() != null) {
-			this.titulo = datosPublicacion.titulo();			
-		}
-		if(datosPublicacion.mensaje() != null) {
-			this.mensaje = datosPublicacion.mensaje();			
-		}
+		this.titulo = datosPublicacion.titulo();
+		this.mensaje = datosPublicacion.mensaje();
 	}
 
 	public int calcularTotalRespuestas() {

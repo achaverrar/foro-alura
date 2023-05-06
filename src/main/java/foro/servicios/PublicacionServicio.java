@@ -41,8 +41,8 @@ public class PublicacionServicio {
 		return datosResumidosPublicacion;
 	}
 
-	public DatosResumidosPublicacion editarPublicacion(DatosEditarPublicacion datosPublicacion) {
-        Publicacion publicacion = publicacionRepositorio.getReferenceById(datosPublicacion.id());
+	public DatosResumidosPublicacion editarPublicacion(Long id, DatosEditarPublicacion datosPublicacion) {
+        Publicacion publicacion = publicacionRepositorio.getReferenceById(id);
         publicacion.editarPublicacion(datosPublicacion);
         return new DatosResumidosPublicacion(publicacion);
     }
