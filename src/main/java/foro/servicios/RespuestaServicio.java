@@ -5,7 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import foro.dto.respuestas.DatosCrearRespuesta;
+import foro.dto.respuestas.DatosGuardarRespuesta;
 import foro.dto.respuestas.DatosCompletosRespuesta;
 import foro.modelo.Publicacion;
 import foro.modelo.Respuesta;
@@ -21,7 +21,7 @@ public class RespuestaServicio {
 	@Autowired
 	private PublicacionRepositorio publicacionRepositorio;
 
-	public DatosCompletosRespuesta crearRespuesta(Long publicacionId, DatosCrearRespuesta datosRespuesta) {
+	public DatosCompletosRespuesta crearRespuesta(Long publicacionId, DatosGuardarRespuesta datosRespuesta) {
 		Publicacion publicacion = publicacionRepositorio.getReferenceById(publicacionId);
 		Respuesta respuesta = respuestaRepositorio.save(new Respuesta(datosRespuesta.mensaje(), publicacion));
 		return new DatosCompletosRespuesta(respuesta);
