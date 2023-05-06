@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import foro.dto.publicaciones.DatosEditarPublicacion;
 import foro.dto.publicaciones.DatosResumidosPublicacion;
-import foro.dto.publicaciones.DatosCrearPublicacion;
+import foro.dto.publicaciones.DatosGuardarPublicacion;
 import foro.dto.publicaciones.DatosCompletosPublicacion;
 import foro.modelo.Publicacion;
 import foro.repositorio.PublicacionRepositorio;
@@ -27,7 +27,7 @@ public class PublicacionServicio {
 		return new DatosCompletosPublicacion(publicacion);
 	}
 
-	public DatosResumidosPublicacion crearPublicacion(DatosCrearPublicacion datosPublicacion) {
+	public DatosResumidosPublicacion crearPublicacion(DatosGuardarPublicacion datosPublicacion) {
 		Publicacion publicacion = publicacionRepositorio.save(new Publicacion(datosPublicacion));
 
 		DatosResumidosPublicacion datosResumidosPublicacion = new DatosResumidosPublicacion(

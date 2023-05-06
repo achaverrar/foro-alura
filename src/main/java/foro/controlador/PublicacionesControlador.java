@@ -20,7 +20,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import foro.dto.publicaciones.DatosEditarPublicacion;
 import foro.dto.publicaciones.DatosResumidosPublicacion;
-import foro.dto.publicaciones.DatosCrearPublicacion;
+import foro.dto.publicaciones.DatosGuardarPublicacion;
 import foro.dto.publicaciones.DatosCompletosPublicacion;
 import foro.servicios.PublicacionServicio;
 import jakarta.transaction.Transactional;
@@ -48,7 +48,7 @@ public class PublicacionesControlador {
 
 	@PostMapping
 	@Transactional
-	public ResponseEntity<DatosResumidosPublicacion> crearPublicacion(@RequestBody @Valid DatosCrearPublicacion datosPublicacion, UriComponentsBuilder uriComponentsBuilder) {
+	public ResponseEntity<DatosResumidosPublicacion> crearPublicacion(@RequestBody @Valid DatosGuardarPublicacion datosPublicacion, UriComponentsBuilder uriComponentsBuilder) {
 		DatosResumidosPublicacion publicacion = publicacionServicio.crearPublicacion(datosPublicacion);
 		URI url = uriComponentsBuilder.path("/publicaciones{id}").buildAndExpand(publicacion.id()).toUri();
 		return ResponseEntity.created(url).body(publicacion);
