@@ -8,9 +8,11 @@ import org.springframework.stereotype.Service;
 import foro.dto.publicaciones.DatosResumidosPublicacion;
 import foro.dto.publicaciones.DatosGuardarPublicacion;
 import foro.dto.publicaciones.DatosCompletosPublicacion;
+import foro.modelo.Curso;
 import foro.modelo.EstadoPublicacion;
 import foro.modelo.Publicacion;
 import foro.modelo.Respuesta;
+import foro.repositorio.CursoRepositorio;
 import foro.repositorio.PublicacionRepositorio;
 import foro.repositorio.RespuestaRepositorio;
 
@@ -23,6 +25,9 @@ public class PublicacionServicio {
 	@Autowired
 	private RespuestaRepositorio respuestaRepositorio;
 
+	@Autowired
+	private CursoRepositorio cursoRepositorio;
+
 	public Page<DatosResumidosPublicacion> listarPublicaciones(Pageable paginacion) {
 		return publicacionRepositorio.findAll(paginacion).map(DatosResumidosPublicacion::new);
 	}
@@ -33,9 +38,12 @@ public class PublicacionServicio {
 	}
 
 	public DatosResumidosPublicacion crearPublicacion(DatosGuardarPublicacion datosPublicacion) {
+		Curso curso = cursoRepositorio.getReferenceById(datosPublicacion.cursoId());	
+
 		Publicacion publicacion = new Publicacion();
 		publicacion.setTitulo(datosPublicacion.titulo());
 		publicacion.setMensaje(datosPublicacion.mensaje());
+		publicacion.setCurso(curso);
 
 		publicacionRepositorio.save(publicacion);
 
@@ -45,10 +53,13 @@ public class PublicacionServicio {
 	}
 
 	public DatosResumidosPublicacion editarPublicacion(Long id, DatosGuardarPublicacion datosPublicacion) {
+		Curso curso = cursoRepositorio.getReferenceById(datosPublicacion.cursoId());
+
 		Publicacion publicacion = publicacionRepositorio.getReferenceById(id);
 
 		publicacion.setTitulo(datosPublicacion.titulo());
 		publicacion.setMensaje(datosPublicacion.mensaje());
+		publicacion.setCurso(curso);
 
 		return new DatosResumidosPublicacion(publicacion);
 	}

@@ -47,7 +47,12 @@ public class PublicacionControlador {
 
 	@PostMapping
 	@Transactional
-	public ResponseEntity<DatosResumidosPublicacion> crearPublicacion(@RequestBody @Valid DatosGuardarPublicacion datosPublicacion, UriComponentsBuilder uriComponentsBuilder) {
+	public ResponseEntity<DatosResumidosPublicacion> crearPublicacion(
+			@RequestBody
+			@Valid
+			DatosGuardarPublicacion datosPublicacion,
+
+			UriComponentsBuilder uriComponentsBuilder) {
 		DatosResumidosPublicacion publicacion = publicacionServicio.crearPublicacion(datosPublicacion);
 		URI url = uriComponentsBuilder.path("/publicaciones{id}").buildAndExpand(publicacion.id()).toUri();
 		return ResponseEntity.created(url).body(publicacion);
@@ -55,7 +60,13 @@ public class PublicacionControlador {
 
 	@PutMapping("/{id}")
 	@Transactional
-	public ResponseEntity<DatosResumidosPublicacion> editarPublicacion(@PathVariable Long id, @RequestBody @Valid DatosGuardarPublicacion datosPublicacion) {
+	public ResponseEntity<DatosResumidosPublicacion> editarPublicacion(
+			@PathVariable
+			Long id,
+
+			@RequestBody
+			@Valid
+			DatosGuardarPublicacion datosPublicacion) {
 		DatosResumidosPublicacion publicacion = publicacionServicio.editarPublicacion(id, datosPublicacion);
         return ResponseEntity.ok(publicacion);
     }
