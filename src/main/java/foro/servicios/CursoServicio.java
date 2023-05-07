@@ -23,4 +23,13 @@ public class CursoServicio {
 
 		return new DatosResumidosCurso(curso);
 	}
+
+	public DatosResumidosCurso editarCurso(Long cursoId, DatosGuardarCurso datosCurso) {
+		Curso curso = cursoRepositorio.getReferenceById(cursoId);
+
+		curso.setNombre(datosCurso.nombre());
+		curso.setCategoria(datosCurso.categoria());
+
+		return new DatosResumidosCurso(curso);
+	}
 }

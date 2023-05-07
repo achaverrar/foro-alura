@@ -59,4 +59,16 @@ public class RespuestaServicio {
 		return new DatosCompletosRespuesta(respuesta);
 	}
 
+	public void escogerRespuestaComoSolucion(Long publicacionId, Long respuestaId) {
+		// TODO: validar que la publicación exista
+		Publicacion publicacion = publicacionRepositorio.getReferenceById(publicacionId);
+
+		// TODO: validar que la respuesta exista
+		Respuesta respuesta = respuestaRepositorio.getReferenceById(respuestaId);
+
+		// TODO: validar que la respuesta corresponda a la publicación señalada
+		publicacion.setEstado(EstadoPublicacion.SOLUCIONADO);
+		respuesta.setSolucion(true);
+	}
+
 }

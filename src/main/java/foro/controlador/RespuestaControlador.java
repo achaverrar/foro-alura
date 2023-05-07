@@ -62,7 +62,6 @@ public class RespuestaControlador {
 				.path("/publicaciones/{publicacionId}/respuestas/{respuestaId}")
 				.buildAndExpand(parametrosUrl)
 				.toUri();
-		System.out.println(url);
 		return ResponseEntity.created(url).body(respuesta);
 	}
 
@@ -76,5 +75,14 @@ public class RespuestaControlador {
 		DatosCompletosRespuesta respuesta = respuestaServicio.editarRespuesta(publicacionId, respuestaId, datosRespuesta);
 
 		return ResponseEntity.ok(respuesta);
+	}
+
+	@PutMapping("/{publicacionId}/respuestas/{respuestaId}/solucion")
+	@Transactional
+	public ResponseEntity escogerRespuestaComoSolucion(
+			@PathVariable Long publicacionId,
+			@PathVariable Long respuestaId) {
+		respuestaServicio.escogerRespuestaComoSolucion(publicacionId, respuestaId);
+		return ResponseEntity.noContent().build();
 	}
 }

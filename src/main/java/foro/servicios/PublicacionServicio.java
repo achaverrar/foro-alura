@@ -9,21 +9,15 @@ import foro.dto.publicaciones.DatosResumidosPublicacion;
 import foro.dto.publicaciones.DatosGuardarPublicacion;
 import foro.dto.publicaciones.DatosCompletosPublicacion;
 import foro.modelo.Curso;
-import foro.modelo.EstadoPublicacion;
 import foro.modelo.Publicacion;
-import foro.modelo.Respuesta;
 import foro.repositorio.CursoRepositorio;
 import foro.repositorio.PublicacionRepositorio;
-import foro.repositorio.RespuestaRepositorio;
 
 @Service
 public class PublicacionServicio {
 
 	@Autowired
 	private PublicacionRepositorio publicacionRepositorio;
-
-	@Autowired
-	private RespuestaRepositorio respuestaRepositorio;
 
 	@Autowired
 	private CursoRepositorio cursoRepositorio;
@@ -69,15 +63,4 @@ public class PublicacionServicio {
 		publicacionRepositorio.delete(publicacion);
 	}
 
-	public void solucionarPublicacion(Long publicacionId, Long respuestaId) {
-		// TODO: validar que la publicación exista
-		Publicacion publicacion = publicacionRepositorio.getReferenceById(publicacionId);
-
-		// TODO: validar que la respuesta exista
-		Respuesta respuesta = respuestaRepositorio.getReferenceById(respuestaId);
-
-		// TODO: validar que la respuesta corresponda a la publicación señalada
-		publicacion.setEstado(EstadoPublicacion.SOLUCIONADO);
-		respuesta.setSolucion(true);
-	}
 }
