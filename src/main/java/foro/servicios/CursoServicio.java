@@ -38,4 +38,9 @@ public class CursoServicio {
 	public Page<DatosResumidosCurso> listarCursos(Pageable paginacion) {
 		return cursoRepositorio.findAll(paginacion).map(DatosResumidosCurso::new);
 	}
+
+	public DatosResumidosCurso encontrarCursoPorId(Long cursoId) {
+		Curso curso = cursoRepositorio.getReferenceById(cursoId);
+		return new DatosResumidosCurso(curso);
+	}
 }

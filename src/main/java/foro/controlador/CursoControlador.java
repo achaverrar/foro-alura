@@ -35,6 +35,12 @@ public class CursoControlador {
 		return ResponseEntity.ok(pagina);
 	}
 
+	@GetMapping("/{cursoId}")
+	public ResponseEntity<DatosResumidosCurso> encontrarCursoPorId(@PathVariable Long cursoId) {
+		DatosResumidosCurso curso = cursoServicio.encontrarCursoPorId(cursoId);
+		return ResponseEntity.ok(curso);
+	}
+
 	@PostMapping
 	@Transactional
 	public ResponseEntity<DatosResumidosCurso> crearCurso(
