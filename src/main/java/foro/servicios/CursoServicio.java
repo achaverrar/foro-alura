@@ -1,6 +1,8 @@
 package foro.servicios;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import foro.dto.cursos.DatosGuardarCurso;
@@ -31,5 +33,9 @@ public class CursoServicio {
 		curso.setCategoria(datosCurso.categoria());
 
 		return new DatosResumidosCurso(curso);
+	}
+
+	public Page<DatosResumidosCurso> listarCursos(Pageable paginacion) {
+		return cursoRepositorio.findAll(paginacion).map(DatosResumidosCurso::new);
 	}
 }
