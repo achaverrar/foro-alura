@@ -79,7 +79,7 @@ public class RespuestaControlador {
 
 	@PutMapping("/{publicacionId}/respuestas/{respuestaId}/solucion")
 	@Transactional
-	public ResponseEntity escogerRespuestaComoSolucion(
+	public ResponseEntity<Void> escogerRespuestaComoSolucion(
 			@PathVariable Long publicacionId,
 			@PathVariable Long respuestaId) {
 		respuestaServicio.escogerRespuestaComoSolucion(publicacionId, respuestaId);

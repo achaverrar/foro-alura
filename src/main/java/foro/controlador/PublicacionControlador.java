@@ -73,7 +73,7 @@ public class PublicacionControlador {
 
 	@DeleteMapping("/{id}")
 	@Transactional
-	public ResponseEntity eliminarPublicacion(@PathVariable Long id) {
+	public ResponseEntity<Void> eliminarPublicacion(@PathVariable Long id) {
 		publicacionServicio.eliminarPublicacion(id);
 		return ResponseEntity.noContent().build();
 	}

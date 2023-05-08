@@ -75,7 +75,7 @@ public class CursoControlador {
 
 	@DeleteMapping("/{cursoId}")
 	@Transactional
-	public ResponseEntity eliminarCurso(@PathVariable Long cursoId) {
+	public ResponseEntity<Void> eliminarCurso(@PathVariable Long cursoId) {
 		cursoServicio.eliminarPublicacion(cursoId);
 		return ResponseEntity.noContent().build();
 	}
