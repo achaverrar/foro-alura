@@ -43,4 +43,9 @@ public class CursoServicio {
 		Curso curso = cursoRepositorio.getReferenceById(cursoId);
 		return new DatosResumidosCurso(curso);
 	}
+
+	public void eliminarPublicacion(Long cursoId) {
+		Curso curso = cursoRepositorio.getReferenceById(cursoId);
+		cursoRepositorio.delete(curso);		
+	}
 }
