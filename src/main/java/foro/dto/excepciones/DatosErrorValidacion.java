@@ -1,4 +1,4 @@
-package foro.dto;
+package foro.dto.excepciones;
 
 import org.springframework.validation.FieldError;
 
