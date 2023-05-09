@@ -1,5 +1,6 @@
 package foro.excepciones;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import foro.dto.excepciones.DatosErrorApi;
 import foro.dto.excepciones.DatosErrorValidacion;
+import foro.dto.excepciones.DatosErrorValorDuplicado;
 import jakarta.persistence.EntityNotFoundException;
 
 @RestControllerAdvice
@@ -28,9 +30,12 @@ public class TratadoDeErrores {
 		return ResponseEntity.badRequest().body(datosError);
 	}
 
-	// TODO: Información repetida, cuando debe ser única
-	// 400
-	// JdbcSQLIntegrityConstraintViolationException
+	// Maneja las peticiones que contienen datos duplicados, cuando debe ser únicos
+	@ExceptionHandler(DataIntegrityViolationException.class)
+	public ResponseEntity<DatosErrorValorDuplicado> tratarError400(DataIntegrityViolationException excepcion) {
+		DatosErrorValorDuplicado datosError = new DatosErrorValorDuplicado(excepcion);
+		return ResponseEntity.badRequest().body(datosError);		
+	}
 
 	// TODO: El id de la entidad original no existe
 	// 404
