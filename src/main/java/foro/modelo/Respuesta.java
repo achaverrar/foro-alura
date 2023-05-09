@@ -2,6 +2,7 @@ package foro.modelo;
 
 import java.time.LocalDateTime;
 
+import foro.excepciones.InfoExcepcionesPersonalizadas;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -21,7 +22,8 @@ import lombok.ToString;
 @NoArgsConstructor
 @Data
 @ToString
-@Table(name = "respuestas", uniqueConstraints = { @UniqueConstraint(columnNames = { "mensaje" }) })
+@Table(name = "respuestas", uniqueConstraints = { @UniqueConstraint(columnNames = { "mensaje" }, 
+name = InfoExcepcionesPersonalizadas.RESPUESTA_MENSAJE_DUPLICADO) })
 public class Respuesta {
 
 	@Id
