@@ -2,8 +2,8 @@ package foro.dto.excepciones;
 
 import org.springframework.validation.FieldError;
 
-public record DatosErrorValidacion(String campo, String error) {
+public record DatosErrorValidacion(String campo, Object valorRechazado, String mensajeDeError) {
 	public DatosErrorValidacion(FieldError error) {
-		this(error.getField(), error.getDefaultMessage());
+		this(error.getField(), error.getRejectedValue(), error.getDefaultMessage());
 	}
 }
