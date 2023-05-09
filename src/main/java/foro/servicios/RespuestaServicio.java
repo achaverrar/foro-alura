@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import foro.dto.respuestas.DatosGuardarRespuesta;
+import foro.excepciones.IdDeEntidadInvalidoException;
 import foro.dto.respuestas.DatosCompletosRespuesta;
 import foro.modelo.EstadoPublicacion;
 import foro.modelo.Publicacion;
@@ -47,10 +48,16 @@ public class RespuestaServicio {
 			Long respuestaId,
 			DatosGuardarRespuesta datosRespuesta) {
 
-		// TODO: validar que la publicación exista
+		if(!publicacionRepositorio.existsById(publicacionId)) {
+			throw new IdDeEntidadInvalidoException("La publicación de id " + publicacionId + " no existe");
+		}
+
 		Publicacion publicacion = publicacionRepositorio.getReferenceById(publicacionId);
 
-		// TODO: validar que la respuesta exista
+		if(!respuestaRepositorio.existsById(respuestaId)) {
+			throw new IdDeEntidadInvalidoException("La respuesta de id " + respuestaId + " no existe");
+		}
+
 		Respuesta respuesta = respuestaRepositorio.getReferenceById(respuestaId);
 
 		// TODO: validar que la respuesta corresponda a la publicación señalada
