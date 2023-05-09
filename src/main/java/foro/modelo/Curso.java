@@ -22,7 +22,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @Data
 @ToString
-@Table(name = "cursos", uniqueConstraints = { @UniqueConstraint(columnNames = { "nombre", "categoria" }) })
+@Table(name = "cursos", uniqueConstraints = { @UniqueConstraint(columnNames = { "nombre" }) })
 public class Curso {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
