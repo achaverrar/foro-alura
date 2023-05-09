@@ -24,8 +24,13 @@ public class RespuestaServicio {
 	private PublicacionRepositorio publicacionRepositorio;
 
 	public DatosCompletosRespuesta crearRespuesta(Long publicacionId, DatosGuardarRespuesta datosRespuesta) {
+		if(!publicacionRepositorio.existsById(publicacionId)) {
+			throw new IdDeEntidadInvalidoException("La publicación de id " + publicacionId + " no existe");
+		}
+
 		Publicacion publicacion = publicacionRepositorio.getReferenceById(publicacionId);
 
+		// TODO: impedir la creación de nuevas respuestas en publicaciones solucionadas
 		if(publicacion.getEstado().equals(EstadoPublicacion.NO_RESPONDIDO)) {
 			publicacion.setEstado(EstadoPublicacion.NO_SOLUCIONADO);
 		}
