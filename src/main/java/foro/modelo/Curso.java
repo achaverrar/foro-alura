@@ -3,6 +3,7 @@ package foro.modelo;
 import java.util.ArrayList;
 import java.util.List;
 
+import foro.excepciones.InfoExcepcionesPersonalizadas;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -22,7 +23,8 @@ import lombok.ToString;
 @NoArgsConstructor
 @Data
 @ToString
-@Table(name = "cursos", uniqueConstraints = { @UniqueConstraint(columnNames = { "nombre" }) })
+@Table(name = "cursos", uniqueConstraints = { @UniqueConstraint(columnNames = { "nombre" },
+name = InfoExcepcionesPersonalizadas.CURSO_NOMBRE_DUPLICADO) })
 public class Curso {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
