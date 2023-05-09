@@ -1,10 +1,13 @@
 package foro.excepciones;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import foro.dto.excepciones.DatosErrorApi;
 import foro.dto.excepciones.DatosErrorValidacion;
 import jakarta.persistence.EntityNotFoundException;
 
@@ -18,9 +21,12 @@ public class TratadoDeErrores {
 		return ResponseEntity.badRequest().body(errores);
 	}
 
-	// TODO: Maneja las peticiones cuyo cuerpo en JSON no se puede leer (porque está vacío o tiene un formato inválido)
-	// 400
-	// HttpMessageNotReadableException
+	// Maneja las peticiones cuyo cuerpo en JSON no se puede leer (porque está vacío o tiene un formato inválido)
+	@ExceptionHandler(HttpMessageNotReadableException.class)
+	public ResponseEntity<DatosErrorApi> tratarError400(HttpMessageNotReadableException excepcion) {
+		DatosErrorApi datosError = new DatosErrorApi(400, HttpStatus.BAD_REQUEST, excepcion, null);
+		return ResponseEntity.badRequest().body(datosError);
+	}
 
 	// TODO: Información repetida, cuando debe ser única
 	// 400
