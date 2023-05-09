@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import foro.excepciones.InfoExcepcionesPersonalizadas;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -28,7 +29,8 @@ import lombok.ToString;
 @NoArgsConstructor
 @Data
 @ToString
-@Table(name = "publicaciones", uniqueConstraints = { @UniqueConstraint(columnNames = { "titulo", "mensaje" }) })
+@Table(name = "publicaciones", uniqueConstraints = { @UniqueConstraint(columnNames = { "titulo", "mensaje" }, 
+name = InfoExcepcionesPersonalizadas.PUBLICACION_TITULO_MENSAJE_DUPLICADO) })
 public class Publicacion {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
