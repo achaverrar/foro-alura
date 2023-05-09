@@ -11,7 +11,7 @@ public class InfoExcepcionesPersonalizadas {
 	public static final Map<String, String> MENSAJES = Map.of(
 			CURSO_NOMBRE_DUPLICADO, "El nombre del curso ya existe",
 			PUBLICACION_TITULO_MENSAJE_DUPLICADO, "Ya existe una publicación con este mensaje",
-			RESPUESTA_MENSAJE_DUPLICADO, "Esta respuesta ya existe"
+			RESPUESTA_MENSAJE_DUPLICADO, "Esta respuesta ya existe en esta publicación"
 			);
 
 }

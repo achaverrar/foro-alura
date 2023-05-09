@@ -22,7 +22,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @Data
 @ToString
-@Table(name = "respuestas", uniqueConstraints = { @UniqueConstraint(columnNames = { "mensaje" }, 
+@Table(name = "respuestas", uniqueConstraints = { @UniqueConstraint(columnNames = { "mensaje", "publicacion_id" }, 
 name = InfoExcepcionesPersonalizadas.RESPUESTA_MENSAJE_DUPLICADO) })
 public class Respuesta {
 
