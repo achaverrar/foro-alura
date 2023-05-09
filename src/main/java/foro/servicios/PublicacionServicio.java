@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import foro.dto.publicaciones.DatosResumidosPublicacion;
+import foro.excepciones.IdDeEntidadInvalidoException;
 import foro.dto.publicaciones.DatosGuardarPublicacion;
 import foro.dto.publicaciones.DatosCompletosPublicacion;
 import foro.modelo.Curso;
@@ -32,7 +33,13 @@ public class PublicacionServicio {
 	}
 
 	public DatosResumidosPublicacion crearPublicacion(DatosGuardarPublicacion datosPublicacion) {
-		Curso curso = cursoRepositorio.getReferenceById(datosPublicacion.cursoId());	
+		Long cursoId = datosPublicacion.cursoId();
+
+		if(!cursoRepositorio.existsById(cursoId)) {
+			throw new IdDeEntidadInvalidoException("El curso de id " + cursoId + " no existe");
+		}
+
+		Curso curso = cursoRepositorio.getReferenceById(cursoId);	
 
 		Publicacion publicacion = new Publicacion();
 		publicacion.setTitulo(datosPublicacion.titulo());

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import foro.dto.excepciones.DatosErrorApi;
+import foro.dto.excepciones.DatosErrorIdDeEntidadInvalido;
 import foro.dto.excepciones.DatosErrorValidacion;
 import foro.dto.excepciones.DatosErrorValorDuplicado;
 import jakarta.persistence.EntityNotFoundException;
@@ -37,9 +38,12 @@ public class TratadoDeErrores {
 		return ResponseEntity.badRequest().body(datosError);		
 	}
 
-	// TODO: El id de la entidad original no existe
-	// 404
-	// EntityNotFoundException
+	// Maneja las peticiones en las que se usa el id de una entidad que no existe
+	@ExceptionHandler(IdDeEntidadInvalidoException.class)
+	public ResponseEntity<DatosErrorIdDeEntidadInvalido> tratarError400(IdDeEntidadInvalidoException excepcion) {
+		DatosErrorIdDeEntidadInvalido datosError = new DatosErrorIdDeEntidadInvalido(excepcion);
+		return ResponseEntity.badRequest().body(datosError);
+	}
 
 	// TODO: El id de la entidad padre no existe
 	// 400
