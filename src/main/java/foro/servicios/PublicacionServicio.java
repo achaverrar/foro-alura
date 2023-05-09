@@ -53,10 +53,25 @@ public class PublicacionServicio {
 		return datosResumidosPublicacion;
 	}
 
-	public DatosResumidosPublicacion editarPublicacion(Long id, DatosGuardarPublicacion datosPublicacion) {
-		Curso curso = cursoRepositorio.getReferenceById(datosPublicacion.cursoId());
+	public DatosResumidosPublicacion editarPublicacion(Long publicacionId, DatosGuardarPublicacion datosPublicacion) {
+		Long cursoId = datosPublicacion.cursoId();
 
-		Publicacion publicacion = publicacionRepositorio.getReferenceById(id);
+		if(!cursoRepositorio.existsById(cursoId)) {
+			throw new IdDeEntidadInvalidoException("El curso de id " + cursoId + " no existe");
+		}
+
+		Curso curso = cursoRepositorio.getReferenceById(cursoId);
+
+		if(!publicacionRepositorio.existsById(publicacionId)) {
+			throw new IdDeEntidadInvalidoException("La publicación de id " + publicacionId + " no existe");
+		}
+
+		Publicacion publicacion = publicacionRepositorio.getReferenceById(publicacionId);
+
+		// TODO: verificar que la publicación pertenezca al curso indicado
+//		if(!publicacion.getCurso().getId().equals(cursoId)) {
+//			
+//		}
 
 		publicacion.setTitulo(datosPublicacion.titulo());
 		publicacion.setMensaje(datosPublicacion.mensaje());
