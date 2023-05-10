@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import foro.dto.respuestas.DatosGuardarRespuesta;
+import foro.excepciones.RecursoNoEncontradoException;
 import foro.excepciones.TransaccionSobreEntidadInexistenteException;
 import foro.dto.respuestas.DatosCompletosRespuesta;
 import foro.modelo.EstadoPublicacion;
@@ -44,8 +45,12 @@ public class RespuestaServicio {
 		return new DatosCompletosRespuesta(respuesta);
 	}
 
-	public Page<DatosCompletosRespuesta> listarRespuestasPorPublicacionId(Long id, Pageable paginacion) {
-		return respuestaRepositorio.findAllByPublicacionId(id, paginacion).map(DatosCompletosRespuesta::new);
+	public Page<DatosCompletosRespuesta> listarRespuestasPorPublicacionId(Long publicacionId, Pageable paginacion) {
+		if(!publicacionRepositorio.existsById(publicacionId)) {
+			throw new RecursoNoEncontradoException("No fue posible encontrar la publicación de id: " + publicacionId);
+		}
+
+		return respuestaRepositorio.findAllByPublicacionId(publicacionId, paginacion).map(DatosCompletosRespuesta::new);
 	}
 
 	public DatosCompletosRespuesta editarRespuesta(
