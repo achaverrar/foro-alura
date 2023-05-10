@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import foro.dto.cursos.DatosGuardarCurso;
 import foro.dto.cursos.DatosResumidosCurso;
+import foro.excepciones.IdDeEntidadInvalidoException;
 import foro.modelo.Curso;
 import foro.repositorio.CursoRepositorio;
 
@@ -27,6 +28,10 @@ public class CursoServicio {
 	}
 
 	public DatosResumidosCurso editarCurso(Long cursoId, DatosGuardarCurso datosCurso) {
+		if(!cursoRepositorio.existsById(cursoId)) {
+			throw new IdDeEntidadInvalidoException("El curso de id " + cursoId + " no existe");
+		}
+
 		Curso curso = cursoRepositorio.getReferenceById(cursoId);
 
 		curso.setNombre(datosCurso.nombre());
