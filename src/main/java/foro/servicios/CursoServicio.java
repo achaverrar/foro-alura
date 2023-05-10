@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import foro.dto.cursos.DatosGuardarCurso;
 import foro.dto.cursos.DatosResumidosCurso;
+import foro.excepciones.RecursoNoEncontradoException;
 import foro.excepciones.TransaccionSobreEntidadInexistenteException;
 import foro.modelo.Curso;
 import foro.repositorio.CursoRepositorio;
@@ -45,6 +46,10 @@ public class CursoServicio {
 	}
 
 	public DatosResumidosCurso encontrarCursoPorId(Long cursoId) {
+		if(!cursoRepositorio.existsById(cursoId)) {
+			throw new RecursoNoEncontradoException("No fue posible encontrar el curso de id: " + cursoId);
+		}
+
 		Curso curso = cursoRepositorio.getReferenceById(cursoId);
 		return new DatosResumidosCurso(curso);
 	}
