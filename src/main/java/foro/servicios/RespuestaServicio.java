@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import foro.dto.respuestas.DatosGuardarRespuesta;
+import foro.excepciones.CambioDeEstadoInvalidoException;
 import foro.excepciones.PertenenciaInvalidaExcepcion;
 import foro.excepciones.RecursoNoEncontradoException;
 import foro.excepciones.TransaccionSobreEntidadInexistenteException;
@@ -32,7 +33,11 @@ public class RespuestaServicio {
 
 		Publicacion publicacion = publicacionRepositorio.getReferenceById(publicacionId);
 
-		// TODO: impedir la creación de nuevas respuestas en publicaciones solucionadas
+		if(publicacion.getEstado().equals(EstadoPublicacion.SOLUCIONADO)) {
+			throw new CambioDeEstadoInvalidoException("No se puede crear esta respuesta, "
+					+ "pues la publicación de id " + publicacionId + " ya fue solucionada");
+		}
+
 		if(publicacion.getEstado().equals(EstadoPublicacion.NO_RESPONDIDO)) {
 			publicacion.setEstado(EstadoPublicacion.NO_SOLUCIONADO);
 		}
