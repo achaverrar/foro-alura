@@ -6,7 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import foro.dto.respuestas.DatosGuardarRespuesta;
-import foro.excepciones.IdDeEntidadInvalidoException;
+import foro.excepciones.TransaccionSobreEntidadInexistenteException;
 import foro.dto.respuestas.DatosCompletosRespuesta;
 import foro.modelo.EstadoPublicacion;
 import foro.modelo.Publicacion;
@@ -25,7 +25,7 @@ public class RespuestaServicio {
 
 	public DatosCompletosRespuesta crearRespuesta(Long publicacionId, DatosGuardarRespuesta datosRespuesta) {
 		if(!publicacionRepositorio.existsById(publicacionId)) {
-			throw new IdDeEntidadInvalidoException("La publicación de id " + publicacionId + " no existe");
+			throw new TransaccionSobreEntidadInexistenteException("La publicación de id " + publicacionId + " no existe");
 		}
 
 		Publicacion publicacion = publicacionRepositorio.getReferenceById(publicacionId);
@@ -54,13 +54,13 @@ public class RespuestaServicio {
 			DatosGuardarRespuesta datosRespuesta) {
 
 		if(!publicacionRepositorio.existsById(publicacionId)) {
-			throw new IdDeEntidadInvalidoException("La publicación de id " + publicacionId + " no existe");
+			throw new TransaccionSobreEntidadInexistenteException("La publicación de id " + publicacionId + " no existe");
 		}
 
 		Publicacion publicacion = publicacionRepositorio.getReferenceById(publicacionId);
 
 		if(!respuestaRepositorio.existsById(respuestaId)) {
-			throw new IdDeEntidadInvalidoException("La respuesta de id " + respuestaId + " no existe");
+			throw new TransaccionSobreEntidadInexistenteException("La respuesta de id " + respuestaId + " no existe");
 		}
 
 		Respuesta respuesta = respuestaRepositorio.getReferenceById(respuestaId);
@@ -73,7 +73,7 @@ public class RespuestaServicio {
 
 	public void escogerRespuestaComoSolucion(Long publicacionId, Long respuestaId) {
 		if(!publicacionRepositorio.existsById(publicacionId)) {
-			throw new IdDeEntidadInvalidoException("La publicación de id " + publicacionId + " no existe");
+			throw new TransaccionSobreEntidadInexistenteException("La publicación de id " + publicacionId + " no existe");
 		}
 
 		Publicacion publicacion = publicacionRepositorio.getReferenceById(publicacionId);
@@ -81,7 +81,7 @@ public class RespuestaServicio {
 		// TODO: validar que la publicación no esté solucionada ya
 
 		if(!respuestaRepositorio.existsById(respuestaId)) {
-			throw new IdDeEntidadInvalidoException("La respuesta de id " + respuestaId + " no existe");
+			throw new TransaccionSobreEntidadInexistenteException("La respuesta de id " + respuestaId + " no existe");
 		}
 
 		Respuesta respuesta = respuestaRepositorio.getReferenceById(respuestaId);

@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 import org.springframework.http.HttpStatus;
 
-import foro.excepciones.IdDeEntidadInvalidoException;
+import foro.excepciones.TransaccionSobreEntidadInexistenteException;
 
 public record DatosErrorIdDeEntidadInvalido(
 		int codigoDeError,
@@ -13,7 +13,7 @@ public record DatosErrorIdDeEntidadInvalido(
 		String mensaje
 		) {
 
-	public DatosErrorIdDeEntidadInvalido(IdDeEntidadInvalidoException excepcion) {
+	public DatosErrorIdDeEntidadInvalido(TransaccionSobreEntidadInexistenteException excepcion) {
 		this(400, HttpStatus.BAD_REQUEST, LocalDateTime.now(), excepcion.getMessage());		
 	}
 }

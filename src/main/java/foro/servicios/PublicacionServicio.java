@@ -6,7 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import foro.dto.publicaciones.DatosResumidosPublicacion;
-import foro.excepciones.IdDeEntidadInvalidoException;
+import foro.excepciones.TransaccionSobreEntidadInexistenteException;
 import foro.dto.publicaciones.DatosGuardarPublicacion;
 import foro.dto.publicaciones.DatosCompletosPublicacion;
 import foro.modelo.Curso;
@@ -36,7 +36,7 @@ public class PublicacionServicio {
 		Long cursoId = datosPublicacion.cursoId();
 
 		if(!cursoRepositorio.existsById(cursoId)) {
-			throw new IdDeEntidadInvalidoException("El curso de id " + cursoId + " no existe");
+			throw new TransaccionSobreEntidadInexistenteException("El curso de id " + cursoId + " no existe");
 		}
 
 		Curso curso = cursoRepositorio.getReferenceById(cursoId);	
@@ -57,13 +57,13 @@ public class PublicacionServicio {
 		Long cursoId = datosPublicacion.cursoId();
 
 		if(!cursoRepositorio.existsById(cursoId)) {
-			throw new IdDeEntidadInvalidoException("El curso de id " + cursoId + " no existe");
+			throw new TransaccionSobreEntidadInexistenteException("El curso de id " + cursoId + " no existe");
 		}
 
 		Curso curso = cursoRepositorio.getReferenceById(cursoId);
 
 		if(!publicacionRepositorio.existsById(publicacionId)) {
-			throw new IdDeEntidadInvalidoException("La publicación de id " + publicacionId + " no existe");
+			throw new TransaccionSobreEntidadInexistenteException("La publicación de id " + publicacionId + " no existe");
 		}
 
 		Publicacion publicacion = publicacionRepositorio.getReferenceById(publicacionId);

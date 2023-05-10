@@ -38,9 +38,9 @@ public class TratadoDeErrores {
 		return ResponseEntity.badRequest().body(datosError);		
 	}
 
-	// Maneja las peticiones en las que se usa el id de una entidad que no existe
-	@ExceptionHandler(IdDeEntidadInvalidoException.class)
-	public ResponseEntity<DatosErrorIdDeEntidadInvalido> tratarError400(IdDeEntidadInvalidoException excepcion) {
+	// Maneja las excepciones por transacciones sobre entidades inexistentes
+	@ExceptionHandler(TransaccionSobreEntidadInexistenteException.class)
+	public ResponseEntity<DatosErrorIdDeEntidadInvalido> tratarError400(TransaccionSobreEntidadInexistenteException excepcion) {
 		DatosErrorIdDeEntidadInvalido datosError = new DatosErrorIdDeEntidadInvalido(excepcion);
 		return ResponseEntity.badRequest().body(datosError);
 	}
