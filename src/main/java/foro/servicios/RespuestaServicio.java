@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import foro.dto.respuestas.DatosGuardarRespuesta;
+import foro.excepciones.PertenenciaInvalidaExcepcion;
 import foro.excepciones.RecursoNoEncontradoException;
 import foro.excepciones.TransaccionSobreEntidadInexistenteException;
 import foro.dto.respuestas.DatosCompletosRespuesta;
@@ -62,15 +63,17 @@ public class RespuestaServicio {
 			throw new TransaccionSobreEntidadInexistenteException("La publicación de id " + publicacionId + " no existe");
 		}
 
-		Publicacion publicacion = publicacionRepositorio.getReferenceById(publicacionId);
-
 		if(!respuestaRepositorio.existsById(respuestaId)) {
 			throw new TransaccionSobreEntidadInexistenteException("La respuesta de id " + respuestaId + " no existe");
 		}
 
 		Respuesta respuesta = respuestaRepositorio.getReferenceById(respuestaId);
 
-		// TODO: validar que la respuesta corresponda a la publicación señalada
+		if(!respuesta.getPublicacion().getId().equals(publicacionId)) {
+			throw new PertenenciaInvalidaExcepcion("La respuesta de id " + respuestaId 
+					+ " no pertenece a la publicación de id " + publicacionId);
+		}
+
 		respuesta.setMensaje(datosRespuesta.mensaje());
 
 		return new DatosCompletosRespuesta(respuesta);
