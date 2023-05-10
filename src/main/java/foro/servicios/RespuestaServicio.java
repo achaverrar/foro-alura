@@ -72,10 +72,18 @@ public class RespuestaServicio {
 	}
 
 	public void escogerRespuestaComoSolucion(Long publicacionId, Long respuestaId) {
-		// TODO: validar que la publicación exista
+		if(!publicacionRepositorio.existsById(publicacionId)) {
+			throw new IdDeEntidadInvalidoException("La publicación de id " + publicacionId + " no existe");
+		}
+
 		Publicacion publicacion = publicacionRepositorio.getReferenceById(publicacionId);
 
-		// TODO: validar que la respuesta exista
+		// TODO: validar que la publicación no esté solucionada ya
+
+		if(!respuestaRepositorio.existsById(respuestaId)) {
+			throw new IdDeEntidadInvalidoException("La respuesta de id " + respuestaId + " no existe");
+		}
+
 		Respuesta respuesta = respuestaRepositorio.getReferenceById(respuestaId);
 
 		// TODO: validar que la respuesta corresponda a la publicación señalada
