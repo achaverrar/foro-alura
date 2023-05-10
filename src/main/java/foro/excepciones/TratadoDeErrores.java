@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import foro.dto.excepciones.DatosErrorApi;
 import foro.dto.excepciones.DatosErrorIdDeEntidadInvalido;
+import foro.dto.excepciones.DatosErrorRecursoNoEncontrado;
 import foro.dto.excepciones.DatosErrorValidacion;
 import foro.dto.excepciones.DatosErrorValorDuplicado;
 import jakarta.persistence.EntityNotFoundException;
@@ -45,22 +46,11 @@ public class TratadoDeErrores {
 		return ResponseEntity.badRequest().body(datosError);
 	}
 
-	// TODO: El id de la entidad padre no existe
-	// 400
-	// JdbcSQLIntegrityConstraintViolationException
-
-	// TODO: No pertenece a la entidad padre del id dado
-	// 400
-	// JdbcSQLIntegrityConstraintViolationException
-
-	// TODO: No hay una entidad padre para la lista que se pide
-	// 400
-	// Sin excepción nativa
-
-	// Maneja los casos en que no se encuetra el recurso solicitado
-	@ExceptionHandler(EntityNotFoundException.class)
-	public ResponseEntity<Object> tratarError404() {
-		return ResponseEntity.notFound().build();
+	// Maneja los casos en que no se encuentra el recurso solicitado
+	@ExceptionHandler(RecursoNoEncontradoException.class)
+	public ResponseEntity<DatosErrorRecursoNoEncontrado> tratarError404(RecursoNoEncontradoException excepcion) {
+		DatosErrorRecursoNoEncontrado datosError = new DatosErrorRecursoNoEncontrado(excepcion);
+		return ResponseEntity.status(datosError.status()).body(datosError);
 	}
 
 	// TODO: Usar un método inválido para un endpoint
