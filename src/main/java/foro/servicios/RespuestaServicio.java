@@ -91,7 +91,10 @@ public class RespuestaServicio {
 
 		Publicacion publicacion = publicacionRepositorio.getReferenceById(publicacionId);
 
-		// TODO: validar que la publicación no esté solucionada ya
+		if(publicacion.getEstado().equals(EstadoPublicacion.SOLUCIONADO)) {
+			throw new CambioDeEstadoInvalidoException("No se puede crear esta respuesta, "
+					+ "pues la publicación de id " + publicacionId + " ya fue solucionada");
+		}
 
 		if(!respuestaRepositorio.existsById(respuestaId)) {
 			throw new TransaccionSobreEntidadInexistenteException("La respuesta de id " + respuestaId + " no existe");
