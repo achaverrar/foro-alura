@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import foro.dto.publicaciones.DatosResumidosPublicacion;
+import foro.excepciones.PertenenciaInvalidaExcepcion;
 import foro.excepciones.RecursoNoEncontradoException;
 import foro.excepciones.TransaccionSobreEntidadInexistenteException;
 import foro.dto.publicaciones.DatosGuardarPublicacion;
@@ -73,10 +74,10 @@ public class PublicacionServicio {
 
 		Publicacion publicacion = publicacionRepositorio.getReferenceById(publicacionId);
 
-		// TODO: verificar que la publicación pertenezca al curso indicado
-//		if(!publicacion.getCurso().getId().equals(cursoId)) {
-//			
-//		}
+		if(!publicacion.getCurso().getId().equals(cursoId)) {
+			throw new PertenenciaInvalidaExcepcion("La publicación de id " + publicacionId 
+					+ " no pertenece al curso de id " + cursoId);
+		}
 
 		publicacion.setTitulo(datosPublicacion.titulo());
 		publicacion.setMensaje(datosPublicacion.mensaje());
