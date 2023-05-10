@@ -9,12 +9,12 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import foro.dto.excepciones.DatosErrorApi;
+import foro.dto.excepciones.DatosErrorCambioDeEstadoInvalido;
 import foro.dto.excepciones.DatosErrorIdDeEntidadInvalido;
 import foro.dto.excepciones.DatosErrorPertenenciaInvalida;
 import foro.dto.excepciones.DatosErrorRecursoNoEncontrado;
 import foro.dto.excepciones.DatosErrorValidacion;
 import foro.dto.excepciones.DatosErrorValorDuplicado;
-import jakarta.persistence.EntityNotFoundException;
 
 @RestControllerAdvice
 public class TratadoDeErrores {
@@ -60,6 +60,14 @@ public class TratadoDeErrores {
 	public ResponseEntity<DatosErrorRecursoNoEncontrado> tratarError404(RecursoNoEncontradoException excepcion) {
 		DatosErrorRecursoNoEncontrado datosError = new DatosErrorRecursoNoEncontrado(excepcion);
 		return ResponseEntity.status(datosError.status()).body(datosError);
+	}
+
+	// Maneja los casos en que no se puede cambiar el estado de una publicación al estado requerido
+	// Ejemplo: escoger como solución a una respuesta cuando la publicación ya está solucionada
+	@ExceptionHandler(CambioDeEstadoInvalidoException.class) 
+	public ResponseEntity<DatosErrorCambioDeEstadoInvalido> tratarError400(CambioDeEstadoInvalidoException excepcion){
+		DatosErrorCambioDeEstadoInvalido datosError = new DatosErrorCambioDeEstadoInvalido(excepcion);
+		return ResponseEntity.badRequest().body(datosError);		
 	}
 
 	// TODO: Usar un método inválido para un endpoint
