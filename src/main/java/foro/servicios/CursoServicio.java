@@ -49,7 +49,11 @@ public class CursoServicio {
 		return new DatosResumidosCurso(curso);
 	}
 
-	public void eliminarPublicacion(Long cursoId) {
+	public void eliminarCurso(Long cursoId) {
+		if(!cursoRepositorio.existsById(cursoId)) {
+			throw new IdDeEntidadInvalidoException("El curso de id " + cursoId + " no existe");
+		}
+
 		Curso curso = cursoRepositorio.getReferenceById(cursoId);
 		cursoRepositorio.delete(curso);		
 	}
