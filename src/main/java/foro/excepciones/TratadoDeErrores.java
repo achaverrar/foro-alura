@@ -4,6 +4,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -11,10 +12,12 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import foro.dto.excepciones.DatosErrorApi;
 import foro.dto.excepciones.DatosErrorCambioDeEstadoInvalido;
 import foro.dto.excepciones.DatosErrorIdDeEntidadInvalido;
+import foro.dto.excepciones.DatosErrorMetodoNoSoportado;
 import foro.dto.excepciones.DatosErrorPertenenciaInvalida;
 import foro.dto.excepciones.DatosErrorRecursoNoEncontrado;
 import foro.dto.excepciones.DatosErrorValidacion;
 import foro.dto.excepciones.DatosErrorValorDuplicado;
+import jakarta.servlet.http.HttpServletRequest;
 
 @RestControllerAdvice
 public class TratadoDeErrores {
@@ -70,9 +73,15 @@ public class TratadoDeErrores {
 		return ResponseEntity.badRequest().body(datosError);		
 	}
 
-	// TODO: Usar un método inválido para un endpoint
-	// 405
-	// HttpRequestMethodNotSupportedException
+	// Maneja las excepciones por usar un método inválido para un endpoint existente
+	@ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+	public ResponseEntity<DatosErrorMetodoNoSoportado> tratarError405(
+			HttpRequestMethodNotSupportedException excepcion, 
+			HttpServletRequest request) {
+
+		DatosErrorMetodoNoSoportado datosError = new DatosErrorMetodoNoSoportado(excepcion, request);
+		return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body(datosError);
+	}
 
 	// TODO: Formato requerido en la petición no es soportado
 	// 406
