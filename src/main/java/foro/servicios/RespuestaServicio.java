@@ -94,7 +94,11 @@ public class RespuestaServicio {
 
 		Respuesta respuesta = respuestaRepositorio.getReferenceById(respuestaId);
 
-		// TODO: validar que la respuesta corresponda a la publicación señalada
+		if(!respuesta.getPublicacion().getId().equals(publicacionId)) {
+			throw new PertenenciaInvalidaExcepcion("La respuesta de id " + respuestaId 
+					+ " no pertenece a la publicación de id " + publicacionId);
+		}
+
 		publicacion.setEstado(EstadoPublicacion.SOLUCIONADO);
 		respuesta.setSolucion(true);
 	}
