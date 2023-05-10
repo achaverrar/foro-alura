@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import foro.dto.publicaciones.DatosResumidosPublicacion;
+import foro.excepciones.RecursoNoEncontradoException;
 import foro.excepciones.TransaccionSobreEntidadInexistenteException;
 import foro.dto.publicaciones.DatosGuardarPublicacion;
 import foro.dto.publicaciones.DatosCompletosPublicacion;
@@ -27,8 +28,12 @@ public class PublicacionServicio {
 		return publicacionRepositorio.findAll(paginacion).map(DatosResumidosPublicacion::new);
 	}
 
-	public DatosCompletosPublicacion encontrarPublicacionPorId(Long id) {
-		Publicacion publicacion = publicacionRepositorio.getReferenceById(id);
+	public DatosCompletosPublicacion encontrarPublicacionPorId(Long publicacionId) {
+		if(!publicacionRepositorio.existsById(publicacionId)) {
+			throw new RecursoNoEncontradoException("No fue posible encontrar la publicación de id: " + publicacionId);
+		}
+
+		Publicacion publicacion = publicacionRepositorio.getReferenceById(publicacionId);
 		return new DatosCompletosPublicacion(publicacion);
 	}
 
