@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import foro.dto.excepciones.DatosErrorApi;
 import foro.dto.excepciones.DatosErrorIdDeEntidadInvalido;
+import foro.dto.excepciones.DatosErrorPertenenciaInvalida;
 import foro.dto.excepciones.DatosErrorRecursoNoEncontrado;
 import foro.dto.excepciones.DatosErrorValidacion;
 import foro.dto.excepciones.DatosErrorValorDuplicado;
@@ -43,6 +44,14 @@ public class TratadoDeErrores {
 	@ExceptionHandler(TransaccionSobreEntidadInexistenteException.class)
 	public ResponseEntity<DatosErrorIdDeEntidadInvalido> tratarError400(TransaccionSobreEntidadInexistenteException excepcion) {
 		DatosErrorIdDeEntidadInvalido datosError = new DatosErrorIdDeEntidadInvalido(excepcion);
+		return ResponseEntity.badRequest().body(datosError);
+	}
+
+	// Maneja las excepciones en las que la relación entre entidades es inválida
+	// Ejemplo: se intenta modificar una publicación que existe, pero no en el curso del id dado
+	@ExceptionHandler(PertenenciaInvalidaExcepcion.class)
+	public ResponseEntity<DatosErrorPertenenciaInvalida> tratarError400(PertenenciaInvalidaExcepcion excepcion) {
+		DatosErrorPertenenciaInvalida datosError = new DatosErrorPertenenciaInvalida(excepcion);
 		return ResponseEntity.badRequest().body(datosError);
 	}
 
