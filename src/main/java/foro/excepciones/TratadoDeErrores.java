@@ -2,15 +2,17 @@ package foro.excepciones;
 
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.HttpMediaTypeNotAcceptableException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-
 import foro.dto.excepciones.DatosErrorApi;
 import foro.dto.excepciones.DatosErrorCambioDeEstadoInvalido;
+import foro.dto.excepciones.DatosErrorFormatoRequeridoNoAceptable;
 import foro.dto.excepciones.DatosErrorIdDeEntidadInvalido;
 import foro.dto.excepciones.DatosErrorMetodoNoSoportado;
 import foro.dto.excepciones.DatosErrorPertenenciaInvalida;
@@ -83,9 +85,21 @@ public class TratadoDeErrores {
 		return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body(datosError);
 	}
 
-	// TODO: Formato requerido en la petición no es soportado
-	// 406
-	// HttpMediaTypeNotAcceptableException
+	// Maneja las excepciones cuando el cliente pide que 
+	// un recurso se le entregue en un formato no disponible 
+	@ExceptionHandler(HttpMediaTypeNotAcceptableException.class)
+	public ResponseEntity<Object> tratarError406(
+			HttpMediaTypeNotAcceptableException excepcion,
+			HttpServletRequest peticion) {
+
+		DatosErrorFormatoRequeridoNoAceptable datosError = 
+				new DatosErrorFormatoRequeridoNoAceptable(excepcion, peticion);
+
+		return ResponseEntity
+				.status(HttpStatus.NOT_ACCEPTABLE)
+				.contentType(MediaType.APPLICATION_JSON)
+				.body(datosError);
+	}
 
 	// TODO: Formato proporcionado en la petición no es soportado
 	// 415
