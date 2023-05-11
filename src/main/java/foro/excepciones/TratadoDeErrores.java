@@ -6,12 +6,14 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.HttpMediaTypeNotAcceptableException;
+import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import foro.dto.excepciones.DatosErrorApi;
 import foro.dto.excepciones.DatosErrorCambioDeEstadoInvalido;
+import foro.dto.excepciones.DatosErrorFormatoNoSoportado;
 import foro.dto.excepciones.DatosErrorFormatoRequeridoNoAceptable;
 import foro.dto.excepciones.DatosErrorIdDeEntidadInvalido;
 import foro.dto.excepciones.DatosErrorMetodoNoSoportado;
@@ -85,10 +87,10 @@ public class TratadoDeErrores {
 		return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body(datosError);
 	}
 
-	// Maneja las excepciones cuando el cliente pide que 
-	// un recurso se le entregue en un formato no disponible 
+	// Maneja las excepciones cuando el formato del documento enviado 
+	// no era el esperado por el cliente
 	@ExceptionHandler(HttpMediaTypeNotAcceptableException.class)
-	public ResponseEntity<Object> tratarError406(
+	public ResponseEntity<DatosErrorFormatoRequeridoNoAceptable> tratarError406(
 			HttpMediaTypeNotAcceptableException excepcion,
 			HttpServletRequest peticion) {
 
@@ -101,9 +103,15 @@ public class TratadoDeErrores {
 				.body(datosError);
 	}
 
-	// TODO: Formato proporcionado en la petición no es soportado
-	// 415
-	// HttpMediaTypeNotSupportedException
+	// Maneja las excepciones causadas por que el cliente pide un documento
+	// en un formato no soportado
+	@ExceptionHandler(HttpMediaTypeNotSupportedException.class)
+	public ResponseEntity<DatosErrorFormatoNoSoportado> tratarError415(
+			HttpMediaTypeNotSupportedException excepcion) {
+
+		DatosErrorFormatoNoSoportado datosError = new DatosErrorFormatoNoSoportado(excepcion);
+		return ResponseEntity.status(HttpStatus.UNSUPPORTED_MEDIA_TYPE).body(datosError);
+	}
 
 	// TODO: Error del servidor
 	// 500
