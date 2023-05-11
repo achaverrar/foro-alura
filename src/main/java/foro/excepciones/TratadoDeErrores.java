@@ -16,6 +16,7 @@ import foro.dto.excepciones.DatosErrorCambioDeEstadoInvalido;
 import foro.dto.excepciones.DatosErrorFormatoNoSoportado;
 import foro.dto.excepciones.DatosErrorFormatoRequeridoNoAceptable;
 import foro.dto.excepciones.DatosErrorIdDeEntidadInvalido;
+import foro.dto.excepciones.DatosErrorInterno;
 import foro.dto.excepciones.DatosErrorMetodoNoSoportado;
 import foro.dto.excepciones.DatosErrorPertenenciaInvalida;
 import foro.dto.excepciones.DatosErrorRecursoNoEncontrado;
@@ -113,7 +114,12 @@ public class TratadoDeErrores {
 		return ResponseEntity.status(HttpStatus.UNSUPPORTED_MEDIA_TYPE).body(datosError);
 	}
 
-	// TODO: Error del servidor
-	// 500
-	// Exception
+	// Maneja el resto de excepciones
+	@ExceptionHandler(Exception.class)
+	public ResponseEntity<Object> tratarError500(Exception excepcion) {
+		System.out.println("Error no atrapado:");
+		excepcion.printStackTrace();
+		DatosErrorInterno datosError = new DatosErrorInterno(excepcion);
+		return new ResponseEntity<>(datosError, HttpStatus.INTERNAL_SERVER_ERROR);
+	}
 }
