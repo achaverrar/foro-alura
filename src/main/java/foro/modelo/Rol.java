@@ -1,5 +1,7 @@
 package foro.modelo;
 
+import org.springframework.security.core.GrantedAuthority;
+
 import foro.excepciones.InfoExcepcionesPersonalizadas;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -19,11 +21,18 @@ import lombok.ToString;
 @ToString
 @Table(name = "roles", uniqueConstraints = { @UniqueConstraint(columnNames = { "nombre" }, 
 name = InfoExcepcionesPersonalizadas.ROL_NOMBRE_DUPLICADO) })
-public class Rol {
+public class Rol implements GrantedAuthority {
+
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
 	private String nombre;
+
+	@Override
+	public String getAuthority() {
+		return this.nombre;
+	}
 }
