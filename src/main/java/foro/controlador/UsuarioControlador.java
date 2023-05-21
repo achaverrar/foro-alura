@@ -1,5 +1,7 @@
 package foro.controlador;
 
+import java.security.Principal;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -7,10 +9,12 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import foro.dto.usuarios.DatosCambioContrasena;
 import foro.dto.usuarios.DatosIngresoUsuario;
 import foro.dto.usuarios.DatosRegistroUsuario;
 import foro.seguridad.DatosToken;
@@ -56,4 +60,12 @@ public class UsuarioControlador {
 		return ResponseEntity.ok().build();
 	}
 
+	@PutMapping("/miCuenta/contrasena")
+	@Transactional
+	public ResponseEntity<Object> cambiarContrasena(
+			Principal principal,
+			@RequestBody @Valid DatosCambioContrasena datosContrasena) {
+		usuarioServicio.cambiarContrasena(principal, datosContrasena);
+		return ResponseEntity.ok().body("Contraseña cambiada con éxito");
+	}
 }
