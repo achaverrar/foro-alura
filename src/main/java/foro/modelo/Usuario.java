@@ -12,6 +12,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import lombok.AllArgsConstructor;
@@ -41,4 +42,7 @@ public class Usuario {
 	joinColumns = @JoinColumn(name="usuario_id", referencedColumnName = "id"),
     inverseJoinColumns=@JoinColumn(name="rol_id", referencedColumnName = "id")) 
 	private List<Rol> roles = new ArrayList<>();
+
+	@OneToMany(mappedBy = "autor")
+	private List<Publicacion> publicaciones = new ArrayList<>();
 }
