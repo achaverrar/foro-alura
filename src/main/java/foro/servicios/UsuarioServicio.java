@@ -54,4 +54,23 @@ public class UsuarioServicio implements UserDetailsService {
 
 		usuarioRepositorio.save(usuario);
 	}
+
+	public void asignarRolAUsuario(Long usuarioId, Long rolId) {
+		Usuario usuario = usuarioRepositorio.getReferenceById(usuarioId);
+		if(usuario == null) {
+			throw new RuntimeException("Este usuario no existe");
+		}
+
+		Rol rol = rolRepositorio.getReferenceById(rolId);
+		if(rol == null) {
+			throw new RuntimeException("Este rol no existe");
+		}
+
+		if(usuario.getRoles().contains(rol)) {
+			throw new RuntimeException("El usuario ya tiene ese rol");
+		}
+
+	 	usuario.getRoles().add(rol);
+
+	}
 }
