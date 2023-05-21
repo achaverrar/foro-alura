@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import foro.dto.usuarios.DatosIngresoUsuario;
 import foro.dto.usuarios.DatosRegistroUsuario;
+import foro.seguridad.DatosToken;
+import foro.seguridad.TokenServicio;
 import foro.servicios.UsuarioServicio;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -26,11 +28,15 @@ public class UsuarioControlador {
 	@Autowired
 	private UsuarioServicio usuarioServicio;
 
+	@Autowired
+	private TokenServicio tokenServicio;
+
 	@PostMapping("/ingreso")
 	public ResponseEntity<Object> iniciarSesion(@RequestBody @Valid DatosIngresoUsuario datosUsuario) {
-		Authentication token = new UsernamePasswordAuthenticationToken(datosUsuario.correo(), datosUsuario.contrasena());
-		authenticationManager.authenticate(token);
-		return ResponseEntity.ok().build();
+		Authentication autenticacionToken = new UsernamePasswordAuthenticationToken(datosUsuario.correo(), datosUsuario.contrasena());
+		Authentication usuarioAutenticado = authenticationManager.authenticate(autenticacionToken);
+		String jwToken = tokenServicio.generarToken(usuarioAutenticado);
+		return ResponseEntity.ok().body(new DatosToken(jwToken));
 	}
 
 	@PostMapping("/registro")
