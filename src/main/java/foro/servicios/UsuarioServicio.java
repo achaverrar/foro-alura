@@ -1,5 +1,6 @@
 package foro.servicios;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
@@ -10,6 +11,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import foro.dto.usuarios.DatosCambioContrasena;
 import foro.dto.usuarios.DatosRegistroUsuario;
 import foro.modelo.Rol;
 import foro.modelo.Usuario;
@@ -72,5 +74,23 @@ public class UsuarioServicio implements UserDetailsService {
 
 	 	usuario.getRoles().add(rol);
 
+	}
+
+	public void cambiarContrasena(Principal principal, DatosCambioContrasena datosContrasena) {
+		Optional<Usuario> usuario = usuarioRepositorio.findByCorreo(principal.getName());
+		if(!usuario.isPresent()) {
+			throw new RuntimeException("Este usuario no existe");
+		}
+
+		if(!datosContrasena.contrasenaNueva().equals(datosContrasena.contrasenaConfirmacion()) ) {
+			throw new RuntimeException("Las contraseñas nueva y su confirmación no coinciden");
+		}
+
+		String contrasenaBaseDatos = usuario.get().getContrasena();
+		if(!passwordEncoder.matches(datosContrasena.contrasenaActual(), contrasenaBaseDatos)) {
+			throw new RuntimeException("Credenciales inválidas");
+		}
+
+		usuario.get().setContrasena(passwordEncoder.encode(datosContrasena.contrasenaNueva()));
 	}
 }
