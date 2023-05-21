@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 
@@ -37,4 +38,17 @@ public class TokenServicio {
 		return jwt;
 	}
 
+	public String recuperarCorreoDeToken(String jwToken) {
+		SecretKey llaveSecreta = Keys.hmacShaKeyFor(llave.getBytes(StandardCharsets.UTF_8));
+
+		Claims claims = Jwts.parserBuilder()
+				.setSigningKey(llaveSecreta)
+				.build()
+				.parseClaimsJws(jwToken)
+				.getBody();
+
+		String correo = claims.getSubject();
+
+		return correo;
+	}
 }
