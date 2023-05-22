@@ -13,8 +13,10 @@ import foro.dto.publicaciones.DatosGuardarPublicacion;
 import foro.dto.publicaciones.DatosCompletosPublicacion;
 import foro.modelo.Curso;
 import foro.modelo.Publicacion;
+import foro.modelo.Usuario;
 import foro.repositorio.CursoRepositorio;
 import foro.repositorio.PublicacionRepositorio;
+import foro.seguridad.SeguridadUtilidades;
 
 @Service
 public class PublicacionServicio {
@@ -45,12 +47,14 @@ public class PublicacionServicio {
 			throw new TransaccionSobreEntidadInexistenteException("El curso de id " + cursoId + " no existe");
 		}
 
-		Curso curso = cursoRepositorio.getReferenceById(cursoId);	
+		Curso curso = cursoRepositorio.getReferenceById(cursoId);
+		Usuario usuario = SeguridadUtilidades.getUsuarioAutenticado();
 
 		Publicacion publicacion = new Publicacion();
 		publicacion.setTitulo(datosPublicacion.titulo());
 		publicacion.setMensaje(datosPublicacion.mensaje());
 		publicacion.setCurso(curso);
+		publicacion.setAutor(usuario);
 
 		publicacionRepositorio.save(publicacion);
 
