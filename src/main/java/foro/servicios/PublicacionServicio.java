@@ -92,6 +92,7 @@ public class PublicacionServicio {
 		return new DatosResumidosPublicacion(publicacion);
 	}
 
+	@PreAuthorize("hasAuthority('ADMIN')")
 	public void eliminarPublicacion(Long id) {
 		Publicacion publicacion = publicacionRepositorio.getReferenceById(id);
 		publicacionRepositorio.delete(publicacion);
