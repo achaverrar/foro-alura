@@ -45,4 +45,7 @@ public class Usuario {
 
 	@OneToMany(mappedBy = "autor")
 	private List<Publicacion> publicaciones = new ArrayList<>();
+	
+	@OneToMany(mappedBy = "autor")
+	private List<Respuesta> respuestas = new ArrayList<>();
 }

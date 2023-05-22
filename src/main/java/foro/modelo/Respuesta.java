@@ -38,6 +38,7 @@ public class Respuesta {
 	@JoinColumn(name = "publicacion_id", nullable = false)
 	private Publicacion publicacion;
 
-	// TODO: incluir el resto de atributos
-//	private Usuario autor;
+	@ManyToOne
+	@JoinColumn(name = "usuario_id")
+	private Usuario autor;
 }
