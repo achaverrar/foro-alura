@@ -3,6 +3,7 @@ package foro.servicios;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import foro.dto.publicaciones.DatosResumidosPublicacion;
@@ -63,6 +64,7 @@ public class PublicacionServicio {
 		return datosResumidosPublicacion;
 	}
 
+	@PreAuthorize("@seguridadUtilidades.esAutor(#publicacionId, 'Publicacion')")
 	public DatosResumidosPublicacion editarPublicacion(Long publicacionId, DatosGuardarPublicacion datosPublicacion) {
 		Long cursoId = datosPublicacion.cursoId();
 
