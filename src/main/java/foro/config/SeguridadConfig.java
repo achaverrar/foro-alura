@@ -37,7 +37,7 @@ public class SeguridadConfig {
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 				.and()
 				.authorizeHttpRequests()
-				.requestMatchers("/publicaciones")
+				.requestMatchers("/publicaciones", "/respuestas")
 				.authenticated()
 				.anyRequest()
 				.permitAll()
