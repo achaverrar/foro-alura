@@ -14,8 +14,10 @@ import foro.dto.respuestas.DatosCompletosRespuesta;
 import foro.modelo.EstadoPublicacion;
 import foro.modelo.Publicacion;
 import foro.modelo.Respuesta;
+import foro.modelo.Usuario;
 import foro.repositorio.PublicacionRepositorio;
 import foro.repositorio.RespuestaRepositorio;
+import foro.seguridad.SeguridadUtilidades;
 
 @Service
 public class RespuestaServicio {
@@ -42,9 +44,12 @@ public class RespuestaServicio {
 			publicacion.setEstado(EstadoPublicacion.NO_SOLUCIONADO);
 		}
 
+		Usuario usuario = SeguridadUtilidades.getUsuarioAutenticado();
+
 		Respuesta respuesta = new Respuesta();
 		respuesta.setMensaje(datosRespuesta.mensaje());
 		respuesta.setPublicacion(publicacion);
+		respuesta.setAutor(usuario);
 
 		respuestaRepositorio.save(respuesta);
 

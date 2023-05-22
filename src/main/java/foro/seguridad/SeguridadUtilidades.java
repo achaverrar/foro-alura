@@ -37,11 +37,9 @@ public class SeguridadUtilidades {
 		} else if (Respuesta.class.getSimpleName().equals(clase)) {
 
 			Respuesta respuesta = respuestaRepositorio.getReferenceById(recursoId);
-			// TODO: implementar getAutor() para la clase Respuesta
-			// String correoAutorRespuesta = respuesta.getAutor().getCorreo(); 
+			 String correoAutorRespuesta = respuesta.getAutor().getCorreo(); 
 
-			//return correoAutorAutenticado.equals(correoAutorRespuesta);
-			return true;
+			return correoAutorAutenticado.equals(correoAutorRespuesta);
 		}
 		return false;
 	}
