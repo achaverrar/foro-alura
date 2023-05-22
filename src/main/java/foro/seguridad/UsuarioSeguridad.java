@@ -51,4 +51,7 @@ public class UsuarioSeguridad implements UserDetails {
 		return true;
 	}
 
+	public Usuario getUsuario() {
+		return this.usuario;
+	}
 }
