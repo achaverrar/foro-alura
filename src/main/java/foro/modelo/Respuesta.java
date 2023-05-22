@@ -39,6 +39,6 @@ public class Respuesta {
 	private Publicacion publicacion;
 
 	@ManyToOne
-	@JoinColumn(name = "usuario_id")
+	@JoinColumn(name = "usuario_id", nullable = false)
 	private Usuario autor;
 }
