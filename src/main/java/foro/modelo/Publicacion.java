@@ -57,7 +57,7 @@ public class Publicacion {
 	private Curso curso;
 
 	@ManyToOne
-	@JoinColumn(name = "usuario_id")
+	@JoinColumn(name = "usuario_id", nullable = false)
 	private Usuario autor;
 
 	public int calcularTotalRespuestas() {
