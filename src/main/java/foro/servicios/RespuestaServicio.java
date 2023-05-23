@@ -3,6 +3,7 @@ package foro.servicios;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import foro.dto.respuestas.DatosGuardarRespuesta;
@@ -64,6 +65,7 @@ public class RespuestaServicio {
 		return respuestaRepositorio.findAllByPublicacionId(publicacionId, paginacion).map(DatosCompletosRespuesta::new);
 	}
 
+	@PreAuthorize("@seguridadUtilidades.esAutor(#respuestaId, 'Respuesta')")
 	public DatosCompletosRespuesta editarRespuesta(
 			Long publicacionId, 
 			Long respuestaId,
@@ -89,6 +91,7 @@ public class RespuestaServicio {
 		return new DatosCompletosRespuesta(respuesta);
 	}
 
+	@PreAuthorize("@seguridadUtilidades.esAutor(#publicacionId, 'Publicacion')")
 	public void escogerRespuestaComoSolucion(Long publicacionId, Long respuestaId) {
 		if(!publicacionRepositorio.existsById(publicacionId)) {
 			throw new TransaccionSobreEntidadInexistenteException("La publicación de id " + publicacionId + " no existe");
