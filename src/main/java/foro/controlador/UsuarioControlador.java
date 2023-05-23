@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import foro.dto.usuarios.DatosCambioContrasena;
 import foro.dto.usuarios.DatosIngresoUsuario;
 import foro.dto.usuarios.DatosRegistroUsuario;
-import foro.seguridad.DatosToken;
+import foro.seguridad.DatosTokensIngreso;
 import foro.seguridad.TokenServicio;
 import foro.servicios.UsuarioServicio;
 import jakarta.transaction.Transactional;
@@ -37,11 +37,14 @@ public class UsuarioControlador {
 	private TokenServicio tokenServicio;
 
 	@PostMapping("/ingreso")
+	@Transactional
 	public ResponseEntity<Object> iniciarSesion(@RequestBody @Valid DatosIngresoUsuario datosUsuario) {
 		Authentication autenticacionToken = new UsernamePasswordAuthenticationToken(datosUsuario.correo(), datosUsuario.contrasena());
 		Authentication usuarioAutenticado = authenticationManager.authenticate(autenticacionToken);
-		String jwToken = tokenServicio.generarToken(usuarioAutenticado);
-		return ResponseEntity.ok().body(new DatosToken(jwToken));
+
+		DatosTokensIngreso tokens = tokenServicio.generarTokensDeIngreso(usuarioAutenticado);
+
+		return ResponseEntity.ok().body(tokens);
 	}
 
 	@PostMapping("/registro")
