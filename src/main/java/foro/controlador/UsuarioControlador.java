@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -70,5 +71,13 @@ public class UsuarioControlador {
 			@RequestBody @Valid DatosCambioContrasena datosContrasena) {
 		usuarioServicio.cambiarContrasena(principal, datosContrasena);
 		return ResponseEntity.ok().body("Contraseña cambiada con éxito");
+	}
+
+	@PostMapping("/salida")
+	@Transactional
+	public ResponseEntity<Object> cerrarSesion() {
+		tokenServicio.eliminarRefreshTokenDeBD();
+		SecurityContextHolder.clearContext();
+		return ResponseEntity.ok().build();
 	}
 }
