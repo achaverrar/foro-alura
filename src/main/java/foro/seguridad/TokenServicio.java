@@ -106,4 +106,9 @@ public class TokenServicio {
 				.toString(32))
 				.replace('\u0020', '0');
 	}
+
+	public void eliminarRefreshTokenDeBD() {
+		Usuario usuario = SeguridadUtilidades.getUsuarioAutenticado();
+		tokenRepositorio.deleteByUsuario(usuario);
+	}
 }
