@@ -18,9 +18,13 @@ import org.springframework.web.bind.annotation.RestController;
 import foro.dto.usuarios.DatosCambioContrasena;
 import foro.dto.usuarios.DatosIngresoUsuario;
 import foro.dto.usuarios.DatosRegistroUsuario;
+import foro.seguridad.DatosCompletosToken;
 import foro.seguridad.DatosTokensIngreso;
 import foro.seguridad.TokenServicio;
 import foro.servicios.UsuarioServicio;
+import io.jsonwebtoken.io.IOException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 
@@ -79,5 +83,15 @@ public class UsuarioControlador {
 		tokenServicio.eliminarRefreshTokenDeBD();
 		SecurityContextHolder.clearContext();
 		return ResponseEntity.ok().build();
+	}
+
+	@PostMapping("/token/refresh")
+	public ResponseEntity<Object> refreshToken(
+			HttpServletRequest peticion, 
+			HttpServletResponse respuesta)
+			throws IOException {
+
+		DatosCompletosToken accessToken = tokenServicio.generarNuevoAccessToken(peticion);
+		return ResponseEntity.ok().body(accessToken);
 	}
 }
