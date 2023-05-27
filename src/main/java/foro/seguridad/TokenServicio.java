@@ -6,6 +6,7 @@ import java.security.SecureRandom;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
+import java.util.Optional;
 import java.util.Random;
 
 import javax.crypto.SecretKey;
@@ -21,6 +22,7 @@ import foro.repositorio.TokenRepositorio;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import jakarta.servlet.http.HttpServletRequest;
 
 @Service
 public class TokenServicio {
@@ -110,5 +112,28 @@ public class TokenServicio {
 	public void eliminarRefreshTokenDeBD() {
 		Usuario usuario = SeguridadUtilidades.getUsuarioAutenticado();
 		tokenRepositorio.deleteByUsuario(usuario);
+	}
+
+	public DatosCompletosToken generarNuevoAccessToken(HttpServletRequest peticion) {
+		String autorizacionHeader = peticion.getHeader("Authorization");
+
+		if (autorizacionHeader != null) {
+			String tokenEnHeader = autorizacionHeader.replace("Bearer ", "");
+			Optional<RefreshToken> refreshTokenEnDB = tokenRepositorio.findByToken(tokenEnHeader);
+
+			if(refreshTokenEnDB.isPresent()) {
+				Date fechaExpiracion = refreshTokenEnDB.get().getFechaExpiracion();
+
+				if(new Date().before(fechaExpiracion)) {
+					Usuario usuario = refreshTokenEnDB.get().getUsuario();
+					DatosCompletosToken datosAccessToken = generarAccessToken(usuario);
+					return datosAccessToken;
+				} else {
+					tokenRepositorio.delete(refreshTokenEnDB.get());
+				}
+			}
+
+		}
+		return null;
 	}
 }
