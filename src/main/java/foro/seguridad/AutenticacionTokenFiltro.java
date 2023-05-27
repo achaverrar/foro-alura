@@ -26,6 +26,11 @@ public class AutenticacionTokenFiltro extends OncePerRequestFilter {
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
+
+		if(shouldNotFilter(request)) {
+			filterChain.doFilter(request, response);
+		}
+
 		String jwToken = recuperarToken(request);
 
 		if (jwToken != null) {
@@ -51,4 +56,10 @@ public class AutenticacionTokenFiltro extends OncePerRequestFilter {
 		}
 		return null;
 	}
+
+	@Override
+    protected boolean shouldNotFilter(HttpServletRequest peticion) throws ServletException {
+        String path = peticion.getRequestURI();
+        return path.equals("/usuarios/token/refresh");
+    }
 }
