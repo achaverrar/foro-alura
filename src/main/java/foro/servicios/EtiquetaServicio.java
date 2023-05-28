@@ -1,6 +1,8 @@
 package foro.servicios;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import foro.dto.etiquetas.categorias.DatosGuardarCategoria;
@@ -25,8 +27,17 @@ public class EtiquetaServicio {
 		return etiqueta;
 	}
 
+	public Page<Etiqueta> listarEtiquetasPorNivel(Nivel nivel, Pageable paginacion) {
+		return etiquetaRepositorio.findAllByNivel(nivel, paginacion);
+	}
+
+	/* CATEGORIAS */
 	public DatosResumidosCategoria crearCategoria(DatosGuardarCategoria datosCategoria) {
 		Etiqueta categoria = crearEtiqueta(datosCategoria.nombre(), Nivel.CATEGORIA, null);
 		return new DatosResumidosCategoria(categoria);
+	}
+
+	public Page<DatosResumidosCategoria> listarCategorias(Pageable paginacion) {
+		return listarEtiquetasPorNivel(Nivel.CATEGORIA, paginacion).map(DatosResumidosCategoria::new);
 	}
 }
