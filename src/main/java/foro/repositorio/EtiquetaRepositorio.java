@@ -10,4 +10,6 @@ import foro.modelo.Nivel;
 public interface EtiquetaRepositorio extends JpaRepository<Etiqueta, Long>  {
 
 	Page<Etiqueta> findAllByNivel(Nivel nivel, Pageable paginacion);
+
+	Etiqueta findByIdAndNivel(Long id, Nivel nivel);
 }
