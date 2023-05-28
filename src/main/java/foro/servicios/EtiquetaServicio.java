@@ -7,6 +7,9 @@ import org.springframework.stereotype.Service;
 
 import foro.dto.etiquetas.categorias.DatosGuardarCategoria;
 import foro.dto.etiquetas.categorias.DatosResumidosCategoria;
+import foro.dto.etiquetas.subcategorias.DatosGuardarSubcategoria;
+import foro.dto.etiquetas.subcategorias.DatosListadoSubcategoria;
+import foro.excepciones.TransaccionSobreEntidadInexistenteException;
 import foro.modelo.Etiqueta;
 import foro.modelo.Nivel;
 import foro.repositorio.EtiquetaRepositorio;
@@ -39,5 +42,24 @@ public class EtiquetaServicio {
 
 	public Page<DatosResumidosCategoria> listarCategorias(Pageable paginacion) {
 		return listarEtiquetasPorNivel(Nivel.CATEGORIA, paginacion).map(DatosResumidosCategoria::new);
+	}
+
+	/* SUBCATEGORIAS */
+	public DatosListadoSubcategoria crearSubcategoria(DatosGuardarSubcategoria datosSubcategoria) {
+		Long categoriaId = Long.valueOf(datosSubcategoria.categoria_id());
+		Etiqueta categoria = etiquetaRepositorio.findByIdAndNivel(categoriaId, Nivel.CATEGORIA);
+
+		if(categoria == null) {
+			throw new TransaccionSobreEntidadInexistenteException("La categoría de id " + categoriaId + " no existe");
+		}
+
+		Etiqueta subcategoria = crearEtiqueta(
+				datosSubcategoria.nombre(),
+				Nivel.SUBCATEGORIA,
+				categoria);
+
+		etiquetaRepositorio.save(subcategoria);
+
+		return new DatosListadoSubcategoria(subcategoria);
 	}
 }
