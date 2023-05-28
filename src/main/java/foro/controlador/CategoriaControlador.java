@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -55,5 +56,20 @@ public class CategoriaControlador {
 		URI url = uriComponentsBuilder.path("categorias/{categoriaId}").buildAndExpand(categoria.id()).toUri();
 
 		return ResponseEntity.created(url).body(categoria);
+	}
+
+	@PutMapping("/{categoriaId}")
+	@Transactional
+	public ResponseEntity<DatosResumidosCategoria> editarCategoria(
+			@PathVariable 
+			Long categoriaId,
+
+			@RequestBody
+			@Valid
+			DatosGuardarCategoria datosCategoria) {
+
+		DatosResumidosCategoria categoria = etiquetaServicio.editarCategoria(categoriaId, datosCategoria);
+
+		return ResponseEntity.ok(categoria);
 	}
 }
