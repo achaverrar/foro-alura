@@ -56,6 +56,18 @@ public class EtiquetaServicio {
 		return new DatosCompletosCategoria(categoria);
 	}
 
+	public DatosResumidosCategoria editarCategoria(Long categoriaId, DatosGuardarCategoria datosCategoria) {
+		if(!etiquetaRepositorio.existsByIdAndNivel(categoriaId, Nivel.CATEGORIA)) {
+			throw new TransaccionSobreEntidadInexistenteException("La categoria de id " + categoriaId + " no existe");
+		}
+
+		Etiqueta categoria = etiquetaRepositorio.getReferenceById(categoriaId);
+
+		categoria.setNombre(datosCategoria.nombre());
+
+		return new DatosResumidosCategoria(categoria);
+	}
+
 	/* SUBCATEGORIAS */
 	public DatosListadoSubcategoria crearSubcategoria(DatosGuardarSubcategoria datosSubcategoria) {
 		Long categoriaId = Long.valueOf(datosSubcategoria.categoria_id());
