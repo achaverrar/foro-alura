@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import foro.dto.etiquetas.categorias.DatosCompletosCategoria;
 import foro.dto.etiquetas.categorias.DatosGuardarCategoria;
 import foro.dto.etiquetas.categorias.DatosResumidosCategoria;
 import foro.dto.etiquetas.subcategorias.DatosGuardarSubcategoria;
@@ -44,6 +45,17 @@ public class EtiquetaServicio {
 		return listarEtiquetasPorNivel(Nivel.CATEGORIA, paginacion).map(DatosResumidosCategoria::new);
 	}
 
+	public DatosCompletosCategoria encontrarCategoriaPorId(Long categoriaId) {
+		etiquetaRepositorio.findByIdAndNivel(categoriaId, Nivel.CATEGORIA);
+		Etiqueta categoria = etiquetaRepositorio.findByIdAndNivel(categoriaId, Nivel.CATEGORIA);
+
+		if(categoria == null) {
+			throw new RecursoNoEncontradoException("La categoría de id " + categoriaId + " no existe");
+		}
+
+		return new DatosCompletosCategoria(categoria);
+	}
+
 	/* SUBCATEGORIAS */
 	public DatosListadoSubcategoria crearSubcategoria(DatosGuardarSubcategoria datosSubcategoria) {
 		Long categoriaId = Long.valueOf(datosSubcategoria.categoria_id());
@@ -62,4 +74,5 @@ public class EtiquetaServicio {
 
 		return new DatosListadoSubcategoria(subcategoria);
 	}
+
 }
