@@ -12,4 +12,6 @@ public interface EtiquetaRepositorio extends JpaRepository<Etiqueta, Long>  {
 	Page<Etiqueta> findAllByNivel(Nivel nivel, Pageable paginacion);
 
 	Etiqueta findByIdAndNivel(Long id, Nivel nivel);
+
+	boolean existsByIdAndNivel(Long id, Nivel nivel);
 }
