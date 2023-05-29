@@ -4,12 +4,15 @@ import java.net.URI;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import foro.dto.etiquetas.subcategorias.DatosCompletosSubcategoria;
 import foro.dto.etiquetas.subcategorias.DatosGuardarSubcategoria;
 import foro.dto.etiquetas.subcategorias.DatosListadoSubcategoria;
 import foro.servicios.EtiquetaServicio;
@@ -22,6 +25,12 @@ public class SubcategoriaControlador {
 
 	@Autowired
 	private EtiquetaServicio etiquetaServicio;
+
+	@GetMapping("/{subcategoriaId}")
+	public ResponseEntity<DatosCompletosSubcategoria> encontrarSubcategoriaPorId(@PathVariable Long subcategoriaId) {
+		DatosCompletosSubcategoria subcategoria = etiquetaServicio.encontrarSubcategoriaPorId(subcategoriaId);
+		return ResponseEntity.ok(subcategoria);
+	}
 
 	@PostMapping
 	@Transactional
