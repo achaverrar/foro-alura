@@ -147,6 +147,14 @@ public class EtiquetaServicio {
 		return new DatosListadoSubcategoria(subcategoria);
 	}
 
+	public void eliminarSubcategoria(Long subcategoriaId) {
+		if(!etiquetaRepositorio.existsByIdAndNivel(subcategoriaId, Nivel.SUBCATEGORIA)) {
+			throw new TransaccionSobreEntidadInexistenteException("La subcategoría de id " + subcategoriaId + " no existe");
+		}
+
+		etiquetaRepositorio.deleteById(subcategoriaId);
+	}
+
 	/* CURSOS */
 	public DatosCompletosCurso crearCurso(DatosGuardarCurso datosCurso) {
 		Long subcategoriaId = Long.valueOf(datosCurso.subcategoria_id());
