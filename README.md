@@ -43,13 +43,14 @@ Mi proyecto cumple con todos ellos y, además cumple con los siguientes requerim
   - [Refresh Token](#refresh-token)
   - [Cambiar contraseña](#cambiar-contraseña)
   - [Asignar rol a usuario](#asignar-rol-a-usuario)
-  - [Tabla Usuario](#tabla-usuario)
-  - [Tabla Refresh Token](#tabla-refresh-token)
+  - [Entidad Usuario](#entidad-usuario)
+  - [Entidad Refresh Token](#tabla-refresh-token)
 - [Roles](#roles)
   - [Crear rol](#crear-rol)
-  - [Tabla Rol](#tabla-rol)
+  - [Entidad Rol](#tabla-rol)
 - [Etiquetas](#etiquetas)
-  - [Tabla Etiqueta](#tabla-etiqueta)
+  - [Entidad Etiqueta](#entidad-etiqueta)
+  - [Enum Nivel](#enum-nivel)
 - [Categorías](#categorías)
   - [Crear Categoría](#crear-categoría)
   - [Listar Categorías](#listar-categorías)
@@ -69,10 +70,23 @@ Mi proyecto cumple con todos ellos y, además cumple con los siguientes requerim
   - [Listar Cursos por Categoría](#listar-cursos-por-categoría)
   - [Listar Cursos por Subcategoría](#listar-cursos-por-subcategoría)
   - [Obtener Curso por Id](#obtener-curso-por-id)
-  - [Editar Curso](#editar-subcategoría)
-  - [Eliminar Curso](#eliminar-subcategoría)
+  - [Editar Curso](#editar-curso)
+  - [Eliminar Curso](#eliminar-curso)
 - [Publicaciones](#publicaciones)
+  - [Crear Publicacion](#crear-publicacion)
+  - [Listar Publicaciones](#listar-publicaciones)
+  - [Listar Publicaciones por Curso](#listar-publicaciones-por-curso)
+  - [Obtener Publicación por Id](#obtener-publicación-por-id)
+  - [Editar Publicación](#editar-publicación)
+  - [Eliminar Publicación](#eliminar-publicación)
+  - [Entidad Publicación](#entidad-publicación)
+  - [Enum EstadoPublicacion](#enum-estadopublicacion)
 - [Respuestas](#respuestas)
+  - [Crear Respuesta](#crear-publicacion)
+  - [Listar Respuestas por Publicación](#listar-publicaciones)
+  - [Editar Respuesta](#listar-publicaciones-por-curso)
+  - [Escoger Respuesta como Solución](#escoger-respuesta-como-solución)
+  - [Entidad Respuesta](#entidad-respuesta)
 - [Insignia por completar el challenge](#insignia-por-completar-el-challenge)
 
 ## Autenticación
@@ -225,9 +239,9 @@ Contraseña cambiada con éxito
 
 </details>
 
-## Tabla Usuario
+## Entidad Usuario
 
-| Attribute     | Type   |
+| Atributo      | Tipo   |
 | ------------- | ------ |
 | id            | long   |
 | nombre        | string |
@@ -237,14 +251,18 @@ Contraseña cambiada con éxito
 | publicaciones | array  |
 | respuestas    | array  |
 
-## Tabla Refresh Token
+> La contraseña está encriptada usando el BCrypt password encoder.
 
-| Attribute        | Type   |
+## Entidad Refresh Token
+
+| Atributo         | Tipo   |
 | ---------------- | ------ |
 | id               | long   |
 | token            | string |
 | fecha_expiracion | date   |
 | usuario_id       | long   |
+
+> El refresh token se genera como instancia de SecureRandom (no es un JWT).
 
 ---
 
@@ -273,17 +291,12 @@ Contraseña cambiada con éxito
 
 </details>
 
-## Tabla Rol
+## Entidad Rol
 
-| Attribute     | Type   |
-| ------------- | ------ |
-| id            | long   |
-| nombre        | string |
-| correo        | string |
-| contrasena    | string |
-| roles         | array  |
-| publicaciones | array  |
-| respuestas    | array  |
+| Atributo | Tipo   |
+| -------- | ------ |
+| id       | long   |
+| nombre   | string |
 
 ---
 
@@ -297,16 +310,24 @@ En el Foro Alura original, las publicaciones están organizadas por categorías,
 
 Por eso, en mi proyecto, tengo una entidad llamada Etiquetas, en lugar de las otras tres: Categorías, Subcategorías y Cursos. Sin embargo, atiendo las peticiones de cada una en un controlador separado.
 
-## Tabla Etiqueta
+## Entidad Etiqueta
 
-| Attribute       | Type   |
+| Atributo        | Tipo   |
 | --------------- | ------ |
 | id              | long   |
 | nombre          | string |
-| nivel           | int    |
-| etiqueta_padre  | array  |
+| nivel           | enum   |
+| etiqueta_padre  | long   |
 | etiquetas_hijas | array  |
 | publicaciones   | array  |
+
+## Enum Nivel
+
+| Nombre       | Ordinal |
+| ------------ | ------- |
+| CATEGORIA    | 0       |
+| SUBCATEGORIA | 1       |
+| CURSO        | 2       |
 
 ---
 
@@ -316,7 +337,7 @@ Por eso, en mi proyecto, tengo una entidad llamada Etiquetas, en lugar de las ot
 
 ---
 
-| Enpoint                          | Método | Acceso        | Descripción              |
+| Endpoint                         | Método | Acceso        | Descripción              |
 | -------------------------------- | ------ | ------------- | ------------------------ |
 | /api/v1/categorias/              | POST   | Privado/Admin | Crear categoría          |
 | /api/v1/categorias/              | GET    | Público       | Listar Categorías        |
@@ -1008,15 +1029,13 @@ Por eso, en mi proyecto, tengo una entidad llamada Etiquetas, en lugar de las ot
 
 ---
 
-| Enpoint                               | Método                                               | Acceso        | Descripción          |
-| ------------------------------------- | ---------------------------------------------------- | ------------- | -------------------- | ------------------------------------- | --- |
-| /api/v1/publicaciones/                | POST                                                 | Privado/Admin | Crear curso          |
-| /api/v1/publicaciones/                | GET                                                  | Público       | Listar publicaciones |
-| <!--                                  | /api/v1/publicaciones/?categoria={categoriaId}       | GET           | Público              | Listar publicaciones por categoria    |
-| <!--                                  | /api/v1/publicaciones/?subcategoria={subcategoriaId} | GET           | Público              | Listar publicaciones por subcategoria | --> |
-| /api/v1/publicaciones/{publicacionId} | GET                                                  | Público       | Obtener curso por id |
-| /api/v1/publicaciones/{publicacionId} | PUT                                                  | Privado/Admin | Editar curso         |
-| /api/v1/publicaciones/{publicacionId} | DELETE                                               | Privado/Admin | Eliminar curso       |
+| Enpoint                               | Método | Acceso        | Descripción                    |
+| ------------------------------------- | ------ | ------------- | ------------------------------ |
+| /api/v1/publicaciones/                | POST   | Privado/Admin | Crear publicación              |
+| /api/v1/publicaciones/                | GET    | Público       | Listar publicaciones           |
+| /api/v1/publicaciones?curso={cursoId} | GET    | Público       | Listar publicaciones por curso |
+| /api/v1/publicaciones/{publicacionId} | PUT    | Privado/Admin | Editar publicación             |
+| /api/v1/publicaciones/{publicacionId} | DELETE | Privado/Admin | Eliminar publicación           |
 
 ## Crear Publicacion
 
@@ -1026,8 +1045,9 @@ Por eso, en mi proyecto, tengo una entidad llamada Etiquetas, en lugar de las ot
 
 ```json
 {
-  "nombre": "Lógica de programación: Primeros pasos",
-  "subcategoria_id": 2
+  "cursoId": 3,
+  "titulo": "¿Cómo creo una publicación?",
+  "mensaje": "No sé cómo crear publicaciones en el foro"
 }
 ```
 
@@ -1036,15 +1056,17 @@ Por eso, en mi proyecto, tengo una entidad llamada Etiquetas, en lugar de las ot
 
 ```javascript
 {
-	"id": 3,
-	"nombre": "Lógica de programación: Primeros pasos",
-	"categoria": {
-		"id": 1,
-		"nombre": "Programación"
-	},
-	"subcategoria": {
-		"id": 2,
-		"nombre": "Lógica de Programación"
+	"publicacionId": 1,
+	"titulo": "¿Cómo creo una publicación?",
+	"mensaje": "No sé cómo crear publicaciones en el foro",
+	"fechaCreacion": "2023-05-29T16:39:55.1362709",
+	"estado": "NO_RESPONDIDO",
+	"totalRespuestas": 0,
+	"cursoId": 3,
+	"usuario": {
+		"usuarioId": 1,
+		"nombre": "Ana",
+		"correo": "ana.souza@voll.med"
 	}
 }
 ```
@@ -1056,7 +1078,7 @@ Por eso, en mi proyecto, tengo una entidad llamada Etiquetas, en lugar de las ot
 ###
 
 ```bash
-[GET] https://localhost:8080/api/v1/cursos
+[GET] https://localhost:8080/api/v1/publicaciones
 ```
 
 <details><summary><b>Output</b></summary>
@@ -1066,38 +1088,95 @@ Por eso, en mi proyecto, tengo una entidad llamada Etiquetas, en lugar de las ot
 	{
 	"content": [
 		{
-			"id": 2,
-			"nombre": "Subcategoría 1",
-			"categoria": {
-				"id": 1,
-				"nombre": "Categoría 2"
+			"publicacionId": 1,
+			"titulo": "¿Cómo creo una publicación?",
+			"mensaje": "No sé cómo crear publicaciones en el foro",
+			"fechaCreacion": "2023-05-29T16:39:55.136271",
+			"estado": "NO_RESPONDIDO",
+			"totalRespuestas": 0,
+			"cursoId": 3,
+			"usuario": {
+				"usuarioId": 1,
+				"nombre": "Ana",
+				"correo": "ana.souza@voll.med"
 			}
 		}
 	],
 	"pageable": {
 		"sort": {
-			"sorted": false,
-			"unsorted": true,
-			"empty": true
+			"unsorted": false,
+			"empty": false,
+			"sorted": true
 		},
+		"offset": 0,
 		"pageNumber": 0,
 		"pageSize": 25,
-		"offset": 0,
 		"paged": true,
 		"unpaged": false
 	},
-	"last": true,
 	"totalPages": 1,
 	"totalElements": 1,
-	"sort": {
-		"sorted": false,
-		"unsorted": true,
-		"empty": true
-	},
+	"last": true,
 	"numberOfElements": 1,
-	"first": true,
 	"number": 0,
 	"size": 25,
+	"sort": {
+		"unsorted": false,
+		"empty": false,
+		"sorted": true
+	},
+	"first": true,
+	"empty": false
+}
+```
+
+## Listar Publicaciones por Curso
+
+###
+
+```bash
+[GET] https://localhost:8080/api/v1/publicaciones?curso={cursoId}
+```
+
+<details><summary><b>Output</b></summary>
+<br/>
+
+```javascript
+	{
+	"content": [
+		{
+			"publicacionId": 1,
+			"titulo": "¿Cómo creo una publicación?",
+			"mensaje": "No sé cómo crear publicaciones en el foro",
+			"fechaCreacion": "2023-05-29T16:39:55.136271",
+			"estado": "NO_RESPONDIDO",
+			"respuestas": []
+		}
+	],
+	"pageable": {
+		"sort": {
+			"unsorted": false,
+			"empty": false,
+			"sorted": true
+		},
+		"offset": 0,
+		"pageNumber": 0,
+		"pageSize": 25,
+		"paged": true,
+		"unpaged": false
+	},
+	"totalPages": 1,
+	"totalElements": 1,
+	"last": true,
+	"numberOfElements": 1,
+	"number": 0,
+	"size": 25,
+	"sort": {
+		"unsorted": false,
+		"empty": false,
+		"sorted": true
+	},
+	"first": true,
 	"empty": false
 }
 ```
@@ -1130,18 +1209,19 @@ Por eso, en mi proyecto, tengo una entidad llamada Etiquetas, en lugar de las ot
 
 ## </details>
 
-## Editar Curso
+## Editar Publicación
 
 ###
 
 ```bash
-[PUT] https://localhost:8080/api/v1/cursos/{cursoId}
+[PUT] https://localhost:8080/publicaciones/{publicacionId}
 ```
 
 ```json
 {
-  "nombre": "Curso Modificado",
-  "subcategoria_id": 2
+  "cursoId": 3,
+  "titulo": "Nuevo título publicación",
+  "mensaje": "Nuevo mensaje publicación"
 }
 ```
 
@@ -1150,27 +1230,29 @@ Por eso, en mi proyecto, tengo una entidad llamada Etiquetas, en lugar de las ot
 
 ```javascript
 {
-	"id": 3,
-	"nombre": "Curso Modificado",
-	"categoria": {
-		"id": 1,
-		"nombre": "Categoría"
-	},
-	"subcategoria": {
-		"id": 2,
-		"nombre": "Subcategoría"
+	"publicacionId": 1,
+	"titulo": "Nuevo título publicación",
+	"mensaje": "Nuevo mensaje publicación",
+	"fechaCreacion": "2023-05-21T23:32:34.336265",
+	"estado": "NO_RESPONDIDO",
+	"totalRespuestas": 0,
+	"cursoId": 3,
+	"usuario": {
+		"usuarioId": 1,
+		"nombre": "Ana",
+		"correo": "ana.souza@voll.med"
 	}
 }
 ```
 
 ## </details>
 
-## Eliminar Curso
+## Eliminar Publicación
 
 ###
 
 ```bash
-[DELETE] https://localhost:8080/api/v1/cursos/{cursoId}
+[DELETE] https://localhost:8080/publicaciones/{publicacionId}
 ```
 
 <details><summary><b>Output</b></summary>
@@ -1179,6 +1261,184 @@ Por eso, en mi proyecto, tengo una entidad llamada Etiquetas, en lugar de las ot
 > Respuesta sin cuerpo
 
 ## </details>
+
+## Entidad Publicación
+
+| Atributo       | Tipo   |
+| -------------- | ------ |
+| id             | long   |
+| título         | string |
+| mensaje        | int    |
+| fecha_creacion | date   |
+| estado         | enum   |
+| respuestas     | array  |
+| curso          | long   |
+| autor          | long   |
+
+## Enum EstadoPublicacion
+
+| Nombre        |
+| ------------- |
+| NO_RESPONDIDO |
+| RESPONDIDO    |
+| SOLUCIONADO   |
+| CERRAOD       |
+
+---
+
+## Respuestas
+
+#### Endpoints para Respuestas
+
+---
+
+| Enpoint                                                                 | Método | Acceso            | Descripción                       |
+| ----------------------------------------------------------------------- | ------ | ----------------- | --------------------------------- |
+| /api/v1/publicaciones/{publicacionId}/respuestas                        | POST   | Privado/Protegido | Crear respuesta                   |
+| /api/v1/publicaciones//{publicacionId}/respuestas                       | GET    | Público           | Listar respuestas por publicación |
+| /api/v1/publicaciones/{publicacionId}/respuestas/{respuestaId}          | PUT    | Privado/Protegido | Editar respuesta                  |
+| /api/v1/publicaciones/{publicacionId}/respuestas/{respuestaId}/solucion | PUT    | Privado/Protegido | Marcar respuesta como solución    |
+
+## Crear Respuesta
+
+```bash
+[POST] https://localhost:8080/api/v1/publicaciones/{publicacionId}/respuestas
+```
+
+```json
+{
+  "mensaje": "Mensaje de respuesta"
+}
+```
+
+<details><summary><b>Output</b></summary>
+<br/>
+
+```javascript
+{
+	"id": 1,
+	"mensaje": "Mensaje de respuesta",
+	"fechaCreacion": "2023-05-22T08:07:21.0336658",
+	"solucion": false,
+	"publicacion_id": 1,
+	"autor": {
+		"usuarioId": 1,
+		"nombre": "Ana",
+		"correo": "ana.souza@voll.med"
+	}
+}
+```
+
+## </details>
+
+## Listar Respuestas por Publicación
+
+```bash
+[GET] https://localhost:8080/api/v1/publicaciones/{publicacionId}/respuestas
+```
+
+<details><summary><b>Output</b></summary>
+<br/>
+
+```javascript
+	{
+	"content": [
+		{
+			"publicacionId": 1,
+			"titulo": "¿Cómo creo una publicación?",
+			"mensaje": "No sé cómo crear publicaciones en el foro",
+			"fechaCreacion": "2023-05-29T16:39:55.136271",
+			"estado": "NO_RESPONDIDO",
+			"respuestas": []
+		}
+	],
+	"pageable": {
+		"sort": {
+			"unsorted": false,
+			"empty": false,
+			"sorted": true
+		},
+		"offset": 0,
+		"pageNumber": 0,
+		"pageSize": 25,
+		"paged": true,
+		"unpaged": false
+	},
+	"totalPages": 1,
+	"totalElements": 1,
+	"last": true,
+	"numberOfElements": 1,
+	"number": 0,
+	"size": 25,
+	"sort": {
+		"unsorted": false,
+		"empty": false,
+		"sorted": true
+	},
+	"first": true,
+	"empty": false
+}
+```
+
+## Editar Respuesta
+
+###
+
+```bash
+[PUT] https://localhost:8080/api/v1/publicaciones/{publicacionId}/respuestas/{respuestaId}
+```
+
+```json
+{
+  "mensaje": "Nuevo mensaje respuesta"
+}
+```
+
+<details><summary><b>Output</b></summary>
+<br/>
+
+```javascript
+{
+	"id": 1,
+	"mensaje": "Nuevo mensaje respuesta",
+	"fechaCreacion": "2023-05-22T07:50:44.914698",
+	"solucion": false,
+	"publicacion_id": 1,
+	"autor": {
+		"usuarioId": 1,
+		"nombre": "Ana",
+		"correo": "ana.souza@voll.med"
+	}
+}
+```
+
+## </details>
+
+## Escoger Respuesta como Solución
+
+###
+
+```bash
+[POST] https://localhost:8080/api/v1/publicaciones/{publicacionId}/respuestas/{respuestaId}/solucion
+```
+
+<details><summary><b>Output</b></summary>
+<br/>
+
+> Respuesta sin cuerpo
+
+## </details>
+
+## Entidad Respuesta
+
+| Atributo       | Tipo    |
+| -------------- | ------- |
+| id             | long    |
+| mensaje        | int     |
+| fecha_creacion | date    |
+| solucion       | boolean |
+| publicacion    | long    |
+| autor          | long    |
 
 ## Insignia por completar el challenge
 
