@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import foro.dto.publicaciones.DatosCompletosPublicacion;
 import foro.dto.publicaciones.DatosGuardarPublicacion;
+import foro.dto.publicaciones.DatosListadoPublicacionPorCurso;
 import foro.dto.publicaciones.DatosResumidosPublicacion;
 import foro.excepciones.PertenenciaInvalidaExcepcion;
 import foro.excepciones.RecursoNoEncontradoException;
@@ -29,8 +30,12 @@ public class PublicacionServicio {
 	@Autowired
 	private EtiquetaRepositorio etiquetaRepositorio;
 
-	public Page<DatosResumidosPublicacion> listarPublicaciones(Pageable paginacion) {
+	public Page<Record> listarPublicaciones(Pageable paginacion) {
 		return publicacionRepositorio.findAll(paginacion).map(DatosResumidosPublicacion::new);
+	}
+
+	public Page<Record> listarPublicacionesPorCursoId(Long cursoId, Pageable paginacion) {
+		return publicacionRepositorio.findAllByCursoId(cursoId, paginacion).map(DatosListadoPublicacionPorCurso::new);
 	}
 
 	public DatosCompletosPublicacion encontrarPublicacionPorId(Long publicacionId) {

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -33,9 +34,27 @@ public class PublicacionControlador {
 	private PublicacionServicio publicacionServicio;
 
 	@GetMapping
-	public ResponseEntity<Page<DatosResumidosPublicacion>> listarPublicaciones(
-			@PageableDefault(size = 25, sort = {"fechaCreacion"}, direction = Direction.DESC) Pageable paginacion) {
-		var pagina = publicacionServicio.listarPublicaciones(paginacion); 
+	public ResponseEntity<Page<Record>> listarPublicaciones(
+			@RequestParam(name = "curso", required = false)
+			Long cursoId,
+
+			@PageableDefault(
+					size = 25,
+					sort = {"fechaCreacion"},
+					direction = Direction.DESC
+					)
+			Pageable paginacion
+		) {
+
+		Page<Record> pagina = null;
+
+		if(cursoId != null) {
+			pagina = publicacionServicio.listarPublicacionesPorCursoId(cursoId, paginacion);
+
+		} else {
+			pagina = publicacionServicio.listarPublicaciones(paginacion); 
+		}
+
 		return ResponseEntity.ok(pagina);
 	}
 
