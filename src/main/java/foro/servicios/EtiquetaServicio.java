@@ -82,6 +82,14 @@ public class EtiquetaServicio {
 		return new DatosResumidosCategoria(categoria);
 	}
 
+	public void eliminarCategoria(Long categoriaId) {
+		if(!etiquetaRepositorio.existsByIdAndNivel(categoriaId, Nivel.CATEGORIA)) {
+			throw new TransaccionSobreEntidadInexistenteException("La categoría de id " + categoriaId + " no existe");
+		}
+
+		etiquetaRepositorio.deleteById(categoriaId);
+	}
+
 	/* SUBCATEGORIAS */
 	public Page<Record> listarSubcategorias(Pageable paginacion) {
 		return listarEtiquetasPorNivel(Nivel.SUBCATEGORIA, paginacion).map(DatosListadoSubcategoria::new);
@@ -241,7 +249,7 @@ public class EtiquetaServicio {
 
 	public void eliminarCurso(Long cursoId) {
 		if(!etiquetaRepositorio.existsByIdAndNivel(cursoId, Nivel.CURSO)) {
-			throw new TransaccionSobreEntidadInexistenteException("La subcategoría de id " + cursoId + " no existe");
+			throw new TransaccionSobreEntidadInexistenteException("El curso de id " + cursoId + " no existe");
 		}
 
 		etiquetaRepositorio.deleteById(cursoId);
