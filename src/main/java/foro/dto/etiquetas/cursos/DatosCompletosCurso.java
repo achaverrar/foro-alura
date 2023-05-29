@@ -15,8 +15,8 @@ public record DatosCompletosCurso (
 		this(
 				curso.getId(),
 				curso.getNombre(),
-				new DatosResumidosCategoria(curso.getEtiquetaPadre()),
-				new DatosResumidosSubcategoria(curso.getEtiquetaPadre().getEtiquetaPadre())
+				new DatosResumidosCategoria(curso.getEtiquetaPadre().getEtiquetaPadre()),
+				new DatosResumidosSubcategoria(curso.getEtiquetaPadre())
 			);
 	}
 }
