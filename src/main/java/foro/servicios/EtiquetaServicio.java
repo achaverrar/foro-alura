@@ -230,4 +230,12 @@ public class EtiquetaServicio {
 
 		return listarPorNivelYEtiquetaPadreId(Nivel.CURSO, subcategoriaId, paginacion).map(DatosResumidosCurso::new);
 	}
+
+	public void eliminarCurso(Long cursoId) {
+		if(!etiquetaRepositorio.existsByIdAndNivel(cursoId, Nivel.CURSO)) {
+			throw new TransaccionSobreEntidadInexistenteException("La subcategoría de id " + cursoId + " no existe");
+		}
+
+		etiquetaRepositorio.deleteById(cursoId);
+	}
 }
