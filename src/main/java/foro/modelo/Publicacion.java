@@ -54,7 +54,7 @@ public class Publicacion {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "curso_id")
-	private Curso curso;
+	private Etiqueta curso;
 
 	@ManyToOne
 	@JoinColumn(name = "usuario_id", nullable = false)

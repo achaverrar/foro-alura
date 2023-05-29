@@ -6,16 +6,17 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
+import foro.dto.publicaciones.DatosCompletosPublicacion;
+import foro.dto.publicaciones.DatosGuardarPublicacion;
 import foro.dto.publicaciones.DatosResumidosPublicacion;
 import foro.excepciones.PertenenciaInvalidaExcepcion;
 import foro.excepciones.RecursoNoEncontradoException;
 import foro.excepciones.TransaccionSobreEntidadInexistenteException;
-import foro.dto.publicaciones.DatosGuardarPublicacion;
-import foro.dto.publicaciones.DatosCompletosPublicacion;
-import foro.modelo.Curso;
+import foro.modelo.Etiqueta;
+import foro.modelo.Nivel;
 import foro.modelo.Publicacion;
 import foro.modelo.Usuario;
-import foro.repositorio.CursoRepositorio;
+import foro.repositorio.EtiquetaRepositorio;
 import foro.repositorio.PublicacionRepositorio;
 import foro.seguridad.SeguridadUtilidades;
 
@@ -26,7 +27,7 @@ public class PublicacionServicio {
 	private PublicacionRepositorio publicacionRepositorio;
 
 	@Autowired
-	private CursoRepositorio cursoRepositorio;
+	private EtiquetaRepositorio etiquetaRepositorio;
 
 	public Page<DatosResumidosPublicacion> listarPublicaciones(Pageable paginacion) {
 		return publicacionRepositorio.findAll(paginacion).map(DatosResumidosPublicacion::new);
@@ -44,11 +45,12 @@ public class PublicacionServicio {
 	public DatosResumidosPublicacion crearPublicacion(DatosGuardarPublicacion datosPublicacion) {
 		Long cursoId = datosPublicacion.cursoId();
 
-		if(!cursoRepositorio.existsById(cursoId)) {
+		Etiqueta curso = etiquetaRepositorio.findByIdAndNivel(cursoId, Nivel.CURSO);
+
+		if(curso == null) {
 			throw new TransaccionSobreEntidadInexistenteException("El curso de id " + cursoId + " no existe");
 		}
 
-		Curso curso = cursoRepositorio.getReferenceById(cursoId);
 		Usuario usuario = SeguridadUtilidades.getUsuarioAutenticado();
 
 		Publicacion publicacion = new Publicacion();
@@ -68,11 +70,11 @@ public class PublicacionServicio {
 	public DatosResumidosPublicacion editarPublicacion(Long publicacionId, DatosGuardarPublicacion datosPublicacion) {
 		Long cursoId = datosPublicacion.cursoId();
 
-		if(!cursoRepositorio.existsById(cursoId)) {
+		Etiqueta curso = etiquetaRepositorio.findByIdAndNivel(cursoId, Nivel.CURSO);
+
+		if(curso == null) {
 			throw new TransaccionSobreEntidadInexistenteException("El curso de id " + cursoId + " no existe");
 		}
-
-		Curso curso = cursoRepositorio.getReferenceById(cursoId);
 
 		if(!publicacionRepositorio.existsById(publicacionId)) {
 			throw new TransaccionSobreEntidadInexistenteException("La publicación de id " + publicacionId + " no existe");

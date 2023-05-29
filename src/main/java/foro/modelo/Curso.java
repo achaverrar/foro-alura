@@ -36,6 +36,6 @@ public class Curso {
 	@Column(name = "categoria", nullable = false)
 	private String categoria;
 
-	@OneToMany(mappedBy = "curso", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Publicacion> publicaciones = new ArrayList<>();
+//	@OneToMany(mappedBy = "curso", cascade = CascadeType.ALL, orphanRemoval = true)
+//	private List<Publicacion> publicaciones = new ArrayList<>();
 }
