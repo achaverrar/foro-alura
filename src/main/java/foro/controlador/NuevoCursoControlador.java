@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -45,5 +46,20 @@ public class NuevoCursoControlador {
 		URI url = uriComponentsBuilder.path("cursos/{cursoId}").buildAndExpand(curso.id()).toUri();
 
 		return ResponseEntity.created(url).body(curso);
+	}
+
+	@PutMapping("/{cursoId}")
+	@Transactional
+	public ResponseEntity<DatosCompletosCurso> editarCurso(
+			@PathVariable
+			Long cursoId,
+
+			@RequestBody
+			@Valid
+			DatosGuardarCurso datosCurso) {
+
+		DatosCompletosCurso curso = etiquetaServicio.editarCurso(cursoId, datosCurso);
+
+		return ResponseEntity.ok(curso);
 	}
 }
