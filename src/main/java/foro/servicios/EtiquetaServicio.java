@@ -1,7 +1,11 @@
 package foro.servicios;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -10,13 +14,13 @@ import foro.dto.etiquetas.categorias.DatosGuardarCategoria;
 import foro.dto.etiquetas.categorias.DatosResumidosCategoria;
 import foro.dto.etiquetas.cursos.DatosCompletosCurso;
 import foro.dto.etiquetas.cursos.DatosGuardarCurso;
+import foro.dto.etiquetas.cursos.DatosResumidosCurso;
 import foro.dto.etiquetas.subcategorias.DatosCompletosSubcategoria;
 import foro.dto.etiquetas.subcategorias.DatosGuardarSubcategoria;
 import foro.dto.etiquetas.subcategorias.DatosListadoSubcategoria;
 import foro.dto.etiquetas.subcategorias.DatosResumidosSubcategoria;
 import foro.excepciones.RecursoNoEncontradoException;
 import foro.excepciones.TransaccionSobreEntidadInexistenteException;
-import foro.modelo.Curso;
 import foro.modelo.Etiqueta;
 import foro.modelo.Nivel;
 import foro.repositorio.EtiquetaRepositorio;
@@ -57,7 +61,6 @@ public class EtiquetaServicio {
 	}
 
 	public DatosCompletosCategoria encontrarCategoriaPorId(Long categoriaId) {
-		etiquetaRepositorio.findByIdAndNivel(categoriaId, Nivel.CATEGORIA);
 		Etiqueta categoria = etiquetaRepositorio.findByIdAndNivel(categoriaId, Nivel.CATEGORIA);
 
 		if(categoria == null) {
@@ -150,7 +153,7 @@ public class EtiquetaServicio {
 		Etiqueta subcategoria = etiquetaRepositorio.findByIdAndNivel(subcategoriaId, Nivel.SUBCATEGORIA);
 
 		if(subcategoria == null) {
-			throw new TransaccionSobreEntidadInexistenteException("La subcategoría de id " + subcategoriaId + " no existe");			
+			throw new TransaccionSobreEntidadInexistenteException("La subcategoría de id " + subcategoriaId + " no existe");
 		}
 
 		Etiqueta curso = crearEtiqueta(
@@ -192,5 +195,39 @@ public class EtiquetaServicio {
 		curso.setEtiquetaPadre(subcategoria);
 
 		return new DatosCompletosCurso(curso);
+	}
+
+	public Page<Record> listarCursos(Pageable paginacion) {
+		return listarEtiquetasPorNivel(Nivel.CURSO, paginacion).map(DatosCompletosCurso::new);
+	}
+
+	public Page<Record> listarCursosPorCategoriaId(Long categoriaId, Pageable paginacion) {
+		Etiqueta categoria = etiquetaRepositorio.findByIdAndNivel(categoriaId, Nivel.CATEGORIA);
+
+		if(categoria == null) {
+			throw new RecursoNoEncontradoException("La categoría de id " + categoriaId + " no existe");
+		}
+
+		List<Etiqueta> cursos = new ArrayList<>();
+
+		List<Etiqueta> subcategorias = categoria.getEtiquetasHijas();
+
+		if(subcategorias.size() != 0) {
+			subcategorias.stream().forEach(subcategoria -> cursos.addAll(subcategoria.getEtiquetasHijas()));
+		}
+
+		List<Record> datosCursos = cursos.stream().map(curso -> (Record) new DatosResumidosCurso(curso)).toList();
+
+		Page<Record> pagina = new PageImpl<Record>(datosCursos, paginacion, datosCursos.size());
+
+		return pagina;
+	}
+
+	public Page<Record> listarCursosPorSubcategoriaId(Long subcategoriaId, Pageable paginacion) {
+		if(!etiquetaRepositorio.existsByIdAndNivel(subcategoriaId, Nivel.SUBCATEGORIA)) {
+			throw new TransaccionSobreEntidadInexistenteException("La subcategoría de id " + subcategoriaId + " no existe");
+		}
+
+		return listarPorNivelYEtiquetaPadreId(Nivel.CURSO, subcategoriaId, paginacion).map(DatosResumidosCurso::new);
 	}
 }
