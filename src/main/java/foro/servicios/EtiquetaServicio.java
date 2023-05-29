@@ -98,4 +98,28 @@ public class EtiquetaServicio {
 
 		return new DatosCompletosSubcategoria(subcategoria);
 	}
+
+	public DatosListadoSubcategoria editarSubcategoria(
+			Long subcategoriaId,
+			DatosGuardarSubcategoria datosSubcategoria
+		) {
+
+		Etiqueta subcategoria = etiquetaRepositorio.findByIdAndNivel(subcategoriaId, Nivel.SUBCATEGORIA);
+
+		if(subcategoria == null) {
+			throw new TransaccionSobreEntidadInexistenteException("La subcategoría de id " + subcategoriaId + " no existe");
+		}
+
+		Long categoriaId = Long.valueOf(datosSubcategoria.categoria_id());
+		Etiqueta categoria = etiquetaRepositorio.findByIdAndNivel(subcategoriaId, Nivel.SUBCATEGORIA);
+
+		if(categoria == null) {
+			throw new RecursoNoEncontradoException("La categoría de id " + categoriaId + " no existe");
+		}
+
+		subcategoria.setNombre(datosSubcategoria.nombre());
+		subcategoria.setEtiquetaPadre(categoria);
+
+		return new DatosListadoSubcategoria(subcategoria);
+	}
 }
