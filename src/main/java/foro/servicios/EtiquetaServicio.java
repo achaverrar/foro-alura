@@ -161,4 +161,14 @@ public class EtiquetaServicio {
 
 		return new DatosCompletosCurso(curso);
 	}
+
+	public DatosCompletosCurso encontrarCursoPorId(Long cursoId) {
+		Etiqueta curso = etiquetaRepositorio.findByIdAndNivel(cursoId, Nivel.CURSO);
+
+		if(curso == null) {
+			throw new RecursoNoEncontradoException("No fue posible encontrar el curso de id: " + cursoId);
+		}
+
+		return new DatosCompletosCurso(curso);
+	}
 }
