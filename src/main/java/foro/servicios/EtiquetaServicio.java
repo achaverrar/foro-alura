@@ -8,8 +8,10 @@ import org.springframework.stereotype.Service;
 import foro.dto.etiquetas.categorias.DatosCompletosCategoria;
 import foro.dto.etiquetas.categorias.DatosGuardarCategoria;
 import foro.dto.etiquetas.categorias.DatosResumidosCategoria;
+import foro.dto.etiquetas.subcategorias.DatosCompletosSubcategoria;
 import foro.dto.etiquetas.subcategorias.DatosGuardarSubcategoria;
 import foro.dto.etiquetas.subcategorias.DatosListadoSubcategoria;
+import foro.excepciones.RecursoNoEncontradoException;
 import foro.excepciones.TransaccionSobreEntidadInexistenteException;
 import foro.modelo.Etiqueta;
 import foro.modelo.Nivel;
@@ -87,4 +89,13 @@ public class EtiquetaServicio {
 		return new DatosListadoSubcategoria(subcategoria);
 	}
 
+	public DatosCompletosSubcategoria encontrarSubcategoriaPorId(Long subcategoriaId) {
+		Etiqueta subcategoria = etiquetaRepositorio.findByIdAndNivel(subcategoriaId, Nivel.SUBCATEGORIA);
+
+		if(subcategoria == null) {
+			throw new RecursoNoEncontradoException("La subcategoría de id " + subcategoriaId + " no existe");
+		}
+
+		return new DatosCompletosSubcategoria(subcategoria);
+	}
 }
