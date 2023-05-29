@@ -29,7 +29,7 @@ import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/usuarios")
+@RequestMapping("/api/v1/")
 public class UsuarioControlador {
 
 	@Autowired
@@ -41,7 +41,7 @@ public class UsuarioControlador {
 	@Autowired
 	private TokenServicio tokenServicio;
 
-	@PostMapping("/ingreso")
+	@PostMapping("/auth/login")
 	@Transactional
 	public ResponseEntity<Object> iniciarSesion(@RequestBody @Valid DatosIngresoUsuario datosUsuario) {
 		Authentication autenticacionToken = new UsernamePasswordAuthenticationToken(datosUsuario.correo(), datosUsuario.contrasena());
@@ -52,14 +52,14 @@ public class UsuarioControlador {
 		return ResponseEntity.ok().body(tokens);
 	}
 
-	@PostMapping("/registro")
+	@PostMapping("/auth/signup")
 	@Transactional
 	public ResponseEntity<Object> registrarUsuario(@RequestBody @Valid DatosRegistroUsuario datosUsuario) {
 		usuarioServicio.registrarUsuario(datosUsuario);
 		return ResponseEntity.ok().body("Registro exitoso");
 	}
 
-	@PostMapping("/{usuarioId}/roles/{rolId}")
+	@PostMapping("usuarios/{usuarioId}/roles/{rolId}")
 	@Transactional
 	public ResponseEntity<Object> asignarRolAUsuario(
 			@PathVariable Long usuarioId,
@@ -68,7 +68,7 @@ public class UsuarioControlador {
 		return ResponseEntity.ok().build();
 	}
 
-	@PutMapping("/miCuenta/contrasena")
+	@PutMapping("usuarios/contrasena")
 	@Transactional
 	public ResponseEntity<Object> cambiarContrasena(
 			Principal principal,
@@ -77,7 +77,7 @@ public class UsuarioControlador {
 		return ResponseEntity.ok().body("Contraseña cambiada con éxito");
 	}
 
-	@PostMapping("/salida")
+	@PostMapping("auth/logout")
 	@Transactional
 	public ResponseEntity<Object> cerrarSesion() {
 		tokenServicio.eliminarRefreshTokenDeBD();
@@ -85,7 +85,7 @@ public class UsuarioControlador {
 		return ResponseEntity.ok().build();
 	}
 
-	@PostMapping("/token/refresh")
+	@PostMapping("auth/token/refresh")
 	public ResponseEntity<Object> refreshToken(
 			HttpServletRequest peticion, 
 			HttpServletResponse respuesta)
