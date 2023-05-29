@@ -26,7 +26,7 @@ import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/publicaciones")
+@RequestMapping("api/v1/publicaciones")
 public class RespuestaControlador {
 	@Autowired
 	private RespuestaServicio respuestaServicio;

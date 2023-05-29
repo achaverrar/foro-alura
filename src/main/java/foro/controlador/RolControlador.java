@@ -12,7 +12,7 @@ import foro.servicios.RolServicio;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/roles")
+@RequestMapping("api/v1/roles")
 public class RolControlador {
 
 	@Autowired
