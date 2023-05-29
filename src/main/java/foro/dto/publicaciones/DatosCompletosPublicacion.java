@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import foro.dto.respuestas.DatosResumidosRespuesta;
+import foro.dto.usuarios.DatosResumidosUsuario;
 import foro.modelo.EstadoPublicacion;
 import foro.modelo.Publicacion;
 
@@ -14,7 +15,9 @@ public record DatosCompletosPublicacion(
 		LocalDateTime fechaCreacion, 
 		EstadoPublicacion estado, 
 		List<DatosResumidosRespuesta> respuestas,
-		Long cursoId) {
+		Long cursoId,
+		DatosResumidosUsuario autor
+		) {
 
 	public DatosCompletosPublicacion(Publicacion publicacion) {
 		this(
@@ -24,6 +27,8 @@ public record DatosCompletosPublicacion(
 				publicacion.getFechaCreacion(), 
 				publicacion.getEstado(), 
 				publicacion.getRespuestas().stream().map(DatosResumidosRespuesta::new).toList(),
-				publicacion.getCurso().getId());
+				publicacion.getCurso().getId(),
+				new DatosResumidosUsuario(publicacion.getAutor())
+			);
 	}
 }

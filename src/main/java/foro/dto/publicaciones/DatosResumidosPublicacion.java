@@ -2,7 +2,6 @@ package foro.dto.publicaciones;
 
 import java.time.LocalDateTime;
 
-import foro.dto.usuarios.DatosResumidosUsuario;
 import foro.modelo.EstadoPublicacion;
 import foro.modelo.Publicacion;
 
@@ -13,8 +12,8 @@ public record DatosResumidosPublicacion(
 		LocalDateTime fechaCreacion,
 		EstadoPublicacion estado,
 		int totalRespuestas,
-		Long cursoId,
-		DatosResumidosUsuario usuario) {
+		Long cursoId
+	) {
 
 	public DatosResumidosPublicacion(Publicacion publicacion) {
 		this(
@@ -24,7 +23,7 @@ public record DatosResumidosPublicacion(
 				publicacion.getFechaCreacion(),
 				publicacion.getEstado(),
 				publicacion.calcularTotalRespuestas(),
-				publicacion.getCurso().getId(),
-				new DatosResumidosUsuario(publicacion.getAutor()));
+				publicacion.getCurso().getId()
+				);
 	}
 }
