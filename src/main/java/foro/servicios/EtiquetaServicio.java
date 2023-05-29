@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import foro.dto.etiquetas.categorias.DatosCompletosCategoria;
 import foro.dto.etiquetas.categorias.DatosGuardarCategoria;
 import foro.dto.etiquetas.categorias.DatosResumidosCategoria;
+import foro.dto.etiquetas.cursos.DatosCompletosCurso;
+import foro.dto.etiquetas.cursos.DatosGuardarCurso;
 import foro.dto.etiquetas.subcategorias.DatosCompletosSubcategoria;
 import foro.dto.etiquetas.subcategorias.DatosGuardarSubcategoria;
 import foro.dto.etiquetas.subcategorias.DatosListadoSubcategoria;
@@ -138,5 +140,25 @@ public class EtiquetaServicio {
 		subcategoria.setEtiquetaPadre(categoria);
 
 		return new DatosListadoSubcategoria(subcategoria);
+	}
+
+	/* CURSOS */
+	public DatosCompletosCurso crearCurso(DatosGuardarCurso datosCurso) {
+		Long subcategoriaId = Long.valueOf(datosCurso.subcategoria_id());
+		Etiqueta subcategoria = etiquetaRepositorio.findByIdAndNivel(subcategoriaId, Nivel.SUBCATEGORIA);
+
+		if(subcategoria == null) {
+			throw new TransaccionSobreEntidadInexistenteException("La subcategoría de id " + subcategoriaId + " no existe");			
+		}
+
+		Etiqueta curso = crearEtiqueta(
+				datosCurso.nombre(),
+				Nivel.CURSO,
+				subcategoria
+				);
+
+		etiquetaRepositorio.save(curso);
+
+		return new DatosCompletosCurso(curso);
 	}
 }
