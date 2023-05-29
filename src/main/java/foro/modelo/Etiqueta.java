@@ -13,6 +13,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -49,4 +51,9 @@ public class Etiqueta {
 	@OneToMany(mappedBy="etiquetaPadre", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Etiqueta> etiquetasHijas = new ArrayList<>();
 
+	@ManyToMany(cascade = CascadeType.ALL)
+	@JoinTable(name="etiquetas_publicaciones", 
+	joinColumns = @JoinColumn(name="etiqueta_id", referencedColumnName = "id"),
+    inverseJoinColumns=@JoinColumn(name="publicacion_id", referencedColumnName = "id"))
+	private List<Publicacion> publicaciones;
 }

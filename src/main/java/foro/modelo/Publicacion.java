@@ -53,7 +53,7 @@ public class Publicacion {
 	private List<Respuesta> respuestas = new ArrayList<>();
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "curso_id", nullable = false)
+	@JoinColumn(name = "curso_id")
 	private Curso curso;
 
 	@ManyToOne
