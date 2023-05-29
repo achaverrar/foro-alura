@@ -25,7 +25,7 @@ import foro.servicios.EtiquetaServicio;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/cursos")
+@RequestMapping("api/v1/cursos")
 public class NuevoCursoControlador {
 
 	@Autowired
