@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -46,5 +47,20 @@ public class SubcategoriaControlador {
 		URI url = uriComponentsBuilder.path("subcategorias/{subcategoriaId}").buildAndExpand(subcategoria.id()).toUri();
 
 		return ResponseEntity.created(url).body(subcategoria);
+	}
+
+	@PutMapping("/{subcategoriaId}")
+	@Transactional
+	public ResponseEntity<DatosListadoSubcategoria> editarSubcategoria(
+			@PathVariable 
+			Long subcategoriaId,
+
+			@RequestBody
+			@Valid
+			DatosGuardarSubcategoria datosSubcategoria) {
+
+		DatosListadoSubcategoria subcategoria = etiquetaServicio.editarSubcategoria(subcategoriaId, datosSubcategoria);
+
+		return ResponseEntity.ok(subcategoria);
 	}
 }
