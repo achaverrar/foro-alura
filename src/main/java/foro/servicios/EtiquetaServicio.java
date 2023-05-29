@@ -16,9 +16,11 @@ import foro.dto.etiquetas.subcategorias.DatosListadoSubcategoria;
 import foro.dto.etiquetas.subcategorias.DatosResumidosSubcategoria;
 import foro.excepciones.RecursoNoEncontradoException;
 import foro.excepciones.TransaccionSobreEntidadInexistenteException;
+import foro.modelo.Curso;
 import foro.modelo.Etiqueta;
 import foro.modelo.Nivel;
 import foro.repositorio.EtiquetaRepositorio;
+import jakarta.validation.Valid;
 
 @Service
 public class EtiquetaServicio {
@@ -168,6 +170,26 @@ public class EtiquetaServicio {
 		if(curso == null) {
 			throw new RecursoNoEncontradoException("No fue posible encontrar el curso de id: " + cursoId);
 		}
+
+		return new DatosCompletosCurso(curso);
+	}
+
+	public DatosCompletosCurso editarCurso(Long cursoId, @Valid DatosGuardarCurso datosCurso) {
+		Etiqueta curso = etiquetaRepositorio.findByIdAndNivel(cursoId, Nivel.CURSO);
+
+		if(curso == null) {
+			throw new RecursoNoEncontradoException("No fue posible encontrar el curso de id: " + cursoId);
+		}
+
+		Long subcategoriaId = Long.valueOf(datosCurso.subcategoria_id());
+		Etiqueta subcategoria = etiquetaRepositorio.findByIdAndNivel(subcategoriaId, Nivel.SUBCATEGORIA);
+
+		if(subcategoria == null) {
+			throw new TransaccionSobreEntidadInexistenteException("La subcategoría de id " + subcategoriaId + " no existe");			
+		}
+
+		curso.setNombre(datosCurso.nombre());
+		curso.setEtiquetaPadre(subcategoria);
 
 		return new DatosCompletosCurso(curso);
 	}
