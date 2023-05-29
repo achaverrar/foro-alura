@@ -17,7 +17,7 @@ import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/api/v1/usuarios")
+@RequestMapping("api/v1/usuarios")
 public class UsuarioControlador {
 
 	@Autowired

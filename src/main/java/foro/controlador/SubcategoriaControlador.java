@@ -26,7 +26,7 @@ import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/api/v1/subcategorias")
+@RequestMapping("api/v1/subcategorias")
 public class SubcategoriaControlador {
 
 	@Autowired
