@@ -11,6 +11,7 @@ import foro.dto.etiquetas.categorias.DatosResumidosCategoria;
 import foro.dto.etiquetas.subcategorias.DatosCompletosSubcategoria;
 import foro.dto.etiquetas.subcategorias.DatosGuardarSubcategoria;
 import foro.dto.etiquetas.subcategorias.DatosListadoSubcategoria;
+import foro.dto.etiquetas.subcategorias.DatosResumidosSubcategoria;
 import foro.excepciones.RecursoNoEncontradoException;
 import foro.excepciones.TransaccionSobreEntidadInexistenteException;
 import foro.modelo.Etiqueta;
@@ -35,6 +36,10 @@ public class EtiquetaServicio {
 
 	public Page<Etiqueta> listarEtiquetasPorNivel(Nivel nivel, Pageable paginacion) {
 		return etiquetaRepositorio.findAllByNivel(nivel, paginacion);
+	}
+	
+	public Page<Etiqueta> listarPorNivelYEtiquetaPadreId(Nivel nivel, Long etiquetaPadreId, Pageable paginacion) {
+		return etiquetaRepositorio.findAllByNivelAndEtiquetaPadreId(nivel, etiquetaPadreId, paginacion);
 	}
 
 	/* CATEGORIAS */
@@ -71,6 +76,18 @@ public class EtiquetaServicio {
 	}
 
 	/* SUBCATEGORIAS */
+	public Page<Record> listarSubcategorias(Pageable paginacion) {
+		return listarEtiquetasPorNivel(Nivel.SUBCATEGORIA, paginacion).map(DatosListadoSubcategoria::new);
+	}
+
+	public Page<Record> listarSubcategoriasPorCategoriaId(Long categoriaId, Pageable paginacion) {
+		if(!etiquetaRepositorio.existsByIdAndNivel(categoriaId, Nivel.CATEGORIA)) {
+			throw new TransaccionSobreEntidadInexistenteException("La categoría de id " + categoriaId + " no existe");
+		}
+
+		return listarPorNivelYEtiquetaPadreId(Nivel.SUBCATEGORIA, categoriaId, paginacion).map(DatosResumidosSubcategoria::new);
+	}
+
 	public DatosListadoSubcategoria crearSubcategoria(DatosGuardarSubcategoria datosSubcategoria) {
 		Long categoriaId = Long.valueOf(datosSubcategoria.categoria_id());
 		Etiqueta categoria = etiquetaRepositorio.findByIdAndNivel(categoriaId, Nivel.CATEGORIA);
