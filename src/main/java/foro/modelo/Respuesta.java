@@ -27,7 +27,7 @@ name = InfoExcepcionesPersonalizadas.RESPUESTA_MENSAJE_DUPLICADO) })
 public class Respuesta {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	private String mensaje;

@@ -32,7 +32,7 @@ name = InfoExcepcionesPersonalizadas.CATEGORIA_NOMBRE_DUPLICADO) })
 public class Etiqueta {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@Column(name = "nombre", nullable = false)
