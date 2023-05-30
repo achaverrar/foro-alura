@@ -29,7 +29,7 @@ Mi proyecto cumple con todos ellos y, además cumple con los siguientes requerim
 
   - [Eclipse](https://www.eclipse.org/)
   - [H2](https://www.h2database.com/)
-  - [MySql](https://www.mysql.com/)
+  <!-- - [MySql](https://www.mysql.com/) -->
   - [Java](https://www.java.com/en/)
   - [Spring Security](https://start.spring.io/)
   - [Token JWT](https://jwt.io/)
@@ -450,6 +450,8 @@ Por eso, en mi proyecto, tengo una entidad llamada Etiquetas, en lugar de las ot
 }
 ```
 
+## </details>
+
 ## Editar Categoría
 
 ```bash
@@ -589,6 +591,8 @@ Por eso, en mi proyecto, tengo una entidad llamada Etiquetas, en lugar de las ot
 	"empty": false
 }
 ```
+
+## </details>
 
 ## Listar Subcategorías por Categoría
 
@@ -820,6 +824,8 @@ Por eso, en mi proyecto, tengo una entidad llamada Etiquetas, en lugar de las ot
 	"empty": false
 }
 ```
+
+## </details>
 
 ## Listar Cursos por Categoría
 
@@ -1130,6 +1136,8 @@ Por eso, en mi proyecto, tengo una entidad llamada Etiquetas, en lugar de las ot
 }
 ```
 
+## </details>
+
 ## Listar Publicaciones por Curso
 
 ###
@@ -1180,6 +1188,8 @@ Por eso, en mi proyecto, tengo una entidad llamada Etiquetas, en lugar de las ot
 	"empty": false
 }
 ```
+
+## </details>
 
 ## Obtener Publicación por Id
 
@@ -1379,6 +1389,8 @@ Por eso, en mi proyecto, tengo una entidad llamada Etiquetas, en lugar de las ot
 	"empty": false
 }
 ```
+
+## </details>
 
 ## Editar Respuesta
 
