@@ -3,6 +3,7 @@ package foro.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -31,16 +32,20 @@ public class SeguridadConfig {
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
 		// Solo para usar la consola de la base de datos H2
-		httpSecurity.headers().frameOptions().disable();
+		// httpSecurity.headers().frameOptions().disable();
 
 		return httpSecurity.csrf().disable().sessionManagement()
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 				.and()
 				.authorizeHttpRequests()
-				.requestMatchers("/publicaciones", "/respuestas", "/usuarios/salida")
-				.authenticated()
-				.anyRequest()
+				.requestMatchers(HttpMethod.GET, "api/v*/**")
 				.permitAll()
+				.requestMatchers("api/v*/auth/**")
+				.permitAll()
+				.requestMatchers("api/v*/categorias/**", "api/v*/subcategorias/**", "api/v*/cursos/**", "api/v*/roles/**")
+				.hasAuthority("ADMIN")
+				.anyRequest()
+				.authenticated()
 				.and()
 				.addFilterBefore(autenticacionTokenFiltro, UsernamePasswordAuthenticationFilter.class)
 				.build();

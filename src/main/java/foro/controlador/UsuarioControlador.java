@@ -4,6 +4,7 @@ import java.security.Principal;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -25,6 +26,7 @@ public class UsuarioControlador {
 
 	@PostMapping("/{usuarioId}/roles/{rolId}")
 	@Transactional
+	@PreAuthorize("hasAuthority('ADMIN')")
 	public ResponseEntity<Object> asignarRolAUsuario(
 			@PathVariable Long usuarioId,
 			@PathVariable Long rolId) {
